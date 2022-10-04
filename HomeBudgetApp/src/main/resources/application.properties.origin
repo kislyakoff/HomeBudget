@@ -1,0 +1,15 @@
+# Data source configuration
+# spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.url=jdbc:postgresql://localhost:5432/home_budget_db
+spring.datasource.username=spring
+spring.datasource.password=admin
+
+# Hibernate configuration
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.properties.hibernate.show_sql=true
+
+# Server configuration
+# server.error.include-message=always
+
+# Jackson configuration - not allow to use integers in json for boolean fields(or stings for numbers or booleans)
+# spring.jackson.mapper.allow-coercion-of-scalars=false
