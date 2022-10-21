@@ -1,12 +1,15 @@
 # Data source configuration
 # spring.datasource.driver-class-name=org.postgresql.Driver
-spring.datasource.url=jdbc:postgresql://localhost:5432/home_budget_db
-spring.datasource.username=spring
-spring.datasource.password=admin
+spring.datasource.url=jdbc:postgresql://#db url
+spring.datasource.username=
+spring.datasource.password=
 
 # Hibernate configuration
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.properties.hibernate.show_sql=true
+
+# enable hidden thymeleaf patch(put, delete) form methods
+spring.mvc.hiddenmethod.filter.enabled=true
 
 # Server configuration
 # server.error.include-message=always
