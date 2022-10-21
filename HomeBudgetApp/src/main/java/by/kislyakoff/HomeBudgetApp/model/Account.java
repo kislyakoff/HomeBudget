@@ -2,8 +2,6 @@ package by.kislyakoff.HomeBudgetApp.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import by.kislyakoff.HomeBudgetApp.model.dict.CurrencyName;
 
@@ -23,7 +22,8 @@ public class Account {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "name")
+	@Column(name = "name") // TODO Validator unique name
+	@NotBlank(message = "Please specify the name")
 	private String name;
 	
 	@Column(name = "description")
@@ -37,14 +37,13 @@ public class Account {
 	@JoinColumn(name = "currency_id", referencedColumnName = "id")
 	private Currency currency;
 	
-	@Column(name = "currency_name")
-	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "currency_code")
 	private CurrencyName currencyName;
 	
 	@Column(name = "active")
 	private Boolean active;
 	
-	@Column(name = "includeInTotal")
+	@Column(name = "include_in_total")
 	private Boolean includeInTotal;
 
 	public Integer getId() {

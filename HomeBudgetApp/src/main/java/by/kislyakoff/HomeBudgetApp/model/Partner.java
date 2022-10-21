@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "partner")
@@ -17,6 +18,7 @@ public class Partner {
 	private Integer id;
 	
 	@Column(name = "name")
+	@NotBlank(message = "Имя должно быть заполнено")
 	private String name;
 
 	public Integer getId() {

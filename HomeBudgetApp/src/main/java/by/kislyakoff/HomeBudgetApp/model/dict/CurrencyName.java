@@ -4,13 +4,13 @@ public enum CurrencyName {
 	
 	BYN(933), USD(840), EUR(978), RUB(643);
 
-	private int code;
+	private Integer code;
 	
-	CurrencyName(int code) {
+	CurrencyName(Integer code) {
 		this.code = code;
 	}
 
-	public int getCode() {
+	public Integer getCode() {
 		return code;
 	}
 }

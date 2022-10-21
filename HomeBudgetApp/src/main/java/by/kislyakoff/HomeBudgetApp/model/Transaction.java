@@ -5,14 +5,13 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import by.kislyakoff.HomeBudgetApp.model.dict.TransactionType;
 
@@ -23,13 +22,14 @@ public class Transaction {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
-	@Column(name = "type")
-	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "transaction_type")
+	@NotNull
 	private TransactionType type;
 	
-	@Column(name = "date")
+	@Column(name = "transaction_date")
+	@NotNull
 	private LocalDate date;
 	
 	@ManyToOne
@@ -54,11 +54,11 @@ public class Transaction {
 	@JoinColumn(name = "category_id", referencedColumnName = "id")
 	private Category category;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -2,8 +2,6 @@ package by.kislyakoff.HomeBudgetApp.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,11 +18,10 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "name")
+	@Column(name = "name") //TODO unique validate
 	private String name;
 	
-	@Column(name = "type")
-	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "category_type")
 	private CategoryType type;
 
 	public Integer getId() {

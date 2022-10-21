@@ -1,16 +1,11 @@
 package by.kislyakoff.HomeBudgetApp.model;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import by.kislyakoff.HomeBudgetApp.model.dict.CurrencyName;
@@ -25,12 +20,9 @@ public class Currency {
 	private Integer id;
 	
 	@NotNull(message = "Please specify currency")
-	@Enumerated(EnumType.STRING)
+	@Column(name = "currency_code")
 	private CurrencyName name;
 	
-	@Transient
-	private BigDecimal rate;
-
 	public Integer getId() {
 		return id;
 	}
@@ -46,15 +38,5 @@ public class Currency {
 	public void setName(CurrencyName name) {
 		this.name = name;
 	}
-
-	public BigDecimal getRate() {
-		return rate;
-	}
-
-	public void setRate(BigDecimal rate) {
-		this.rate = rate;
-	}
-	
-	
 
 }
