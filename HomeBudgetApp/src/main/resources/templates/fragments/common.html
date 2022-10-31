@@ -1,0 +1,192 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="meta">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="author" content="" />
+	<meta name="description" content="" />
+	<meta name="generator" content="" />
+</th:block>
+
+<th:block th:fragment="styles">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.1/css/bootstrap.min.css" integrity="sha512-6KY5s6UI5J7SVYuZB4S/CZMyPylqyyNZco376NM2Z8Sb8OxEdp02e1jkKk/wZxIEmjQ6DRCEBhni+gpr9c4tvA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/perfect-scrollbar/1.5.2/css/perfect-scrollbar.min.css" integrity="sha512-ygIxOy3hmN2fzGeNqys7ymuBgwSCet0LVfqQbWY10AszPMn2rB9JY0eoG0m1pySicu+nvORrBmhHVSt7+GI9VA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</th:block>
+
+<th:block th:fragment="title(route)">
+    <title th:switch="${route}">
+        <th:block th:case="home">Добро пожаловать</th:block>
+        <th:block th:case="users">Список пользователей</th:block>
+        <th:block th:case="create">Новый пользователь</th:block>
+        <th:block th:case="edit">Редактирование пользователя</th:block>
+        <th:block th:case="seek">Поиск пользователя</th:block>
+        <th:block th:case="contacts">Список контактов пользователя</th:block>
+        <th:block th:case="login">Авторизация</th:block>
+        <th:block th:case="partners">Список партнеров</th:block>
+        <th:block th:case="edit_partner">Редактирование партнера</th:block>
+        <th:block th:case="create_partner">Новый партнер</th:block>
+        <th:block th:case="categories">Список категорий</th:block>
+        <th:block th:case="edit_category">Редактирование категории</th:block>
+        <th:block th:case="create_category">Новая_категория</th:block>
+        <th:block th:case="*">Unknown!</th:block>
+        | Home Budget App
+    </title>
+</th:block>
+
+<th:block th:fragment="breadcrumbs(route)">
+    <h3 class="breadcrumbs">
+        <a href="/homebudget">Главная</a>
+        <i class="fas fa-chevron-right"></i>
+        <th:block th:if="${route} == 'home'">
+            <span>Добро пожаловать</span>
+        </th:block>
+        <th:block th:if="${route} == 'users' OR ${route} == 'create' OR ${route} == 'edit'">
+            <a href="/homebudget/users">Пользователи</a>
+            <i class="fas fa-chevron-right"></i>
+            <th:block th:switch="${route}">
+                <span th:case="users">Список</span>
+                <span th:case="create">Новый</span>
+                <span th:case="edit">Редактирование</span>
+            </th:block>
+        </th:block>
+        <th:block th:if="${route} == 'partners' OR 
+        				${route} == 'create_partner' OR ${route} == 'edit_partner'">
+            <a href="/homebudget/partners">Партнеры</a>
+            <i class="fas fa-chevron-right"></i>
+            <th:block th:switch="${route}">
+                <span th:case="partners">Список</span>
+                <span th:case="create_partner">Новый</span>
+                <span th:case="edit_partner">Редактирование</span>
+            </th:block>
+        </th:block>
+        <th:block th:if="${route} == 'categories' OR 
+        				${route} == 'create_category' OR ${route} == 'edit_category'">
+            <a href="/homebudget/partners">Категории</a>
+            <i class="fas fa-chevron-right"></i>
+            <th:block th:switch="${route}">
+                <span th:case="categories">Список</span>
+                <span th:case="create_category">Новая</span>
+                <span th:case="edit_category">Редактирование</span>
+            </th:block>
+        </th:block>
+    </h3>
+</th:block>
+
+<th:block th:fragment="menu(route)">
+    <div class="menu">
+    	<th:block sec:authorize="hasAuthority('ADMIN')">
+        	<em><i class="fas fa-users-cog"></i> Меню администратора</em>
+	       	<ul>
+	            <li>
+	                <a class="active" th:if="${route == 'users'}">Пользователи</a>
+	                <a href="/homebudget/users" th:unless="${route == 'users'}">Пользователи</a>
+	            </li>
+	            <th:block th:fragment="usermenu">
+			        <li>
+		                <a class="active" th:if="${route == 'list'}">Список</a>
+		                <a href="/list" th:unless="${route == 'list'}">Список</a>
+		            </li>
+		            <li>
+		                <a class="active" th:if="${route == 'seek'}">Поиск</a>
+		                <a href="/seek" th:unless="${route == 'seek'}">Поиск</a>
+		            </li>
+		            <li>
+		                <a class="active" th:if="${route == 'create'}">Создать</a>
+		                <a href="/create" th:unless="${route == 'create'}">Создать</a>
+		            </li>
+		           </th:block>
+	       	</ul>
+	       	<em><i class="fas fa-book"></i> Справочник</em>
+	       		<ul>
+		       		<li>
+		                <a class="active" th:if="${route == 'partners'}">Партнеры</a>
+		                <a href="/homebudget/partners" th:unless="${route == 'partners'}">Партнеры</a>
+		            </li>
+		            <li>
+		                <a class="active" th:if="${route == 'categories'}">Категории</a>
+		                <a href="/homebudget/categories" th:unless="${route == 'categories'}">Категории</a>
+		            </li>
+	            </ul>
+	            
+        </th:block>
+        
+        <th:block sec:authorize="hasAuthority('USER')">
+	        <em><i class="fas fa-user-tie"></i> Меню пользователя</em>
+	        <ul>
+	            <th:block th:insert=":: usermenu"></th:block>
+	        </ul>
+        </th:block>
+        
+    </div>
+</th:block>
+
+<th:block th:fragment="user-menu">
+    <div class="user-menu">
+        <i class="fas fa-user-circle">
+            <div class="menu">
+                <div class="items">
+                    <a href="javascript:void(0)" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Выход</a>
+                    <a href="javascript:void(0)" onclick="edit()"><i class="fas fa-edit"></i> Изменить</a>
+                </div>
+            </div>
+        </i>
+    </div>
+    <script>
+    
+        function logout() {
+            preloader(true);
+            $.ajax({
+                url: '/logout',
+                type: 'POST',
+                success: () => {
+                    document.location.href = '/logout';
+                },
+                error: () => {
+                    preloader(false);
+                    window.alert('Не удалось выполнить выход из системы!');
+                }
+            });
+        }
+//         TODO: implement edit user GET request
+        function edit() {
+        	preloader(true);
+        	$.ajax({
+                url: '/',
+                type: 'GET',
+                success: () => {
+                    document.location.href = '/';
+                },
+                error: () => {
+                    preloader(false);
+                    window.alert('Не удалось выполнить действие!');
+                }
+            });
+        }
+    </script>
+</th:block>
+
+<th:block th:fragment="preloader">
+    <section class="preloader d-none">
+        <div class="preloader-block">
+            <div class="preloader-spinner">
+                <div></div>
+            </div>
+        </div>
+    </section>
+</th:block>
+
+<th:block th:fragment="scripts">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/perfect-scrollbar/1.5.2/perfect-scrollbar.min.js" integrity="sha512-byagY9YdfRsmvM/9ld4XQ9mvd9uNhNOaMzvCYpPw1CLuoIXAdWR8/6rHjRwuWy0Pi+JGWjDHiE7tVGhtPd21ZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script type="text/javascript" src="https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+        $(document).ready(function() {
+            const content = document.querySelector('#content');
+            if (content) {
+                const ps = new PerfectScrollbar(content);
+            }
+        });
+    </script>
+</th:block>

@@ -1,0 +1,102 @@
+    <!doctype html>
+    <html lang="ru" xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="default">
+        <head>
+            <th:block th:insert="fragments/common.html :: meta"></th:block>
+            <th:block th:insert="fragments/common.html :: styles"></th:block>
+            <th:block th:insert="fragments/common.html :: title('login')"></th:block>
+        </head>
+        <body>
+            <section class="login-panel">
+                <div class="ui-block authorize">
+                    <div class="header"><i class="fas fa-unlock-alt"></i> Авторизация</div>
+                    <div class="body">
+                        <form name="f" method="post" action="/process_login">
+                            <div class="mb-2">
+                                <label for="username" class="form-label">Имя пользователя</label>
+                                <input type="text" class="form-control" name="username" id="username" autocomplete="off" />
+                            </div>
+                            <div class="mb-2">
+                                <label for="password" class="form-label">Пароль</label>
+                                <input type="password" class="form-control" name="password" id="password" />
+                            </div>
+                            <div class="mb-4 form-check">
+                                <input type="checkbox" class="form-check-input" id="remember-me" />
+                                <label class="form-check-label" for="remember-me">запомнить меня</label>
+                            </div>
+                            <div class="text-center">
+<!--                                 <button type="button" class="btn btn-primary" onclick="authorize()">OK</button> -->
+                                <button type="submit" class="btn btn-primary">OK</button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="cancel()">Сброс</button>
+                            </div>
+                            <div th:if="${param.error}" style="color: red">
+<!--                             [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]] -->
+						        Неправильные имя или пароль
+						    </div>
+						    <div th:if="${param.logout}" style="color: red">
+						        Вы вышли из системы
+						    </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <section class="modal-background" onclick="hideAlert()">
+                <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i> <span></span>
+                </div>
+            </section>
+
+            <th:block th:insert="fragments/common.html :: preloader"></th:block>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script src="js/common.js"></script>
+            <script>
+//                 function showAlert(message) {
+//                     $('.modal-background > .alert span').text(message);
+//                     $('.modal-background').css('display', 'flex');
+//                 }
+
+//                 function hideAlert() {
+//                     $('.modal-background').css('display', 'none');
+//                 }
+
+//                 function authorize() {
+//                     const username = $('#username').val();
+//                     const password     = $('#password').val();
+//                     const regExEmpty   = /^\s+$/;
+
+//                     if (!username || regExEmpty.test(username) || !password || regExEmpty.test(password)) {
+//                         showAlert('Пожалуйста укажите данные для авторизации!');
+//                         return;
+//                     }
+
+//                     preloader(true);
+//                     $.ajax({
+//                         url: '/process_login',
+//                         type: 'POST',
+//                         data: 
+//                             username,
+//                             password
+//                         ,
+//                         success: function(data) {
+//                             console.log(data);
+//                         }
+// //                         success: () => {
+// //                             document.location.href = '/';
+// //                         },
+// //                         error: () => {
+// //                             preloader(false);
+// //                             showAlert('Данные для авторизации указаны неправильно!');
+// //                         }
+//                     });
+//                 }
+
+                function cancel() {
+                    $('#username').val('');
+                    $('#password').val('');
+                }
+            </script>
+        </body>
+        </th:block>
+    </html>
