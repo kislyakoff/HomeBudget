@@ -1,0 +1,32 @@
+<th:block th:fragment="content(route)">
+
+<th:block th:with= "createLink='/homebudget/partners/create', 
+					editLink='/homebudget/partners/edit/' + ${partner.getId()}">
+	<form th:method="${route == 'create_partner'} ? POST : (${route == 'edit_partner'} ? PATCH : '')" 
+		th:action="${route == 'create_partner'} ? ${createLink} : (${route == 'edit_partner'} ? ${editLink})" 
+				th:object="${partner}">
+        <div class="form-horizontal edit-user">
+            <div class="form-header" th:if="${route == 'create_partner'}">Новый партнер</div>
+            <div class="form-header" th:if="${route == 'edit_partner'}">Редактирование партнера</div>
+            <div class="form-row">
+                <label for="name" class="form-label required">Название</label>
+                <input type="text" class="form-control" id="name" th:field="*{name}" th:value="${partner.name}" />
+            </div>
+            <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+            <div class="form-row buttons">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="back()">Назад</button>
+            </div>
+        </div>
+    </form>
+ </th:block>
+    
+    <script>
+    // возврат к списку пользователей
+    function back() {
+        document.location.href = '/homebudget/partners';
+    }
+    
+    </script>
+
+</th:block>

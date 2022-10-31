@@ -1,0 +1,146 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="content">
+
+<form id="seek-form" action="/homebudget/partners" method="get">
+<div class="input-group">
+  	  <button type="button" class="btn btn-outline-success" onclick="create()">
+   								<i class="fas fa-plus"></i>&nbsp;&nbsp;Добавить</button>
+	  <input type="text" class="form-control" placeholder="Поиск по названию" name="seek" id="seek-value">
+	  <button type="button" class="btn btn-outline-success" onclick="search()">OK</button>
+	  <button type="button" class="btn btn-outline-secondary" onclick="cancel()">Отмена</button>
+	  <button type="button" class="btn btn-outline-danger" onclick="res()">
+	  							<i class="fas fa-times"></i>&nbsp;&nbsp;Сброс</button>
+</div>
+ </form>
+
+	 <table class="table-1">
+        <thead>
+            <tr>
+                <th width="10%">ID</th>
+                <th width="70%">Название</th>
+                <th width="20%">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<tr th:each="partner: ${partners}">
+        		<td th:text="${partner.getId()}"></td>
+        		<td th:text="${partner.getName()}"></td>
+                <td>
+                    <div class="action">
+                        <div class="action-btn" th:onclick="edit([[${partner.id}]])">
+                            <i class="fas fa-edit text-success" title="Редактировать"></i>
+                        </div>
+                        <div class="action-btn" th:onclick="kill([[${partner.id}]])">
+                            <i class="fas fa-times text-danger" title="Удалить"></i>
+                        </div>
+                    </div>
+                </td>
+        	
+        	</tr>
+        </tbody>
+     </table>
+     
+     <ul class="page-control" th:if="${pagination} != null">
+     		<li th:text="'Перв.'"
+                th:onclick="go([[1]])"
+            ></li>
+           
+            	<th:block th:if="${!pagination.pages[0].isActive}">
+            		 <li th:text="'Пред.'"
+               		 	 th:onclick="go([[${page} - 1]])"
+               		 ></li>
+               	</th:block>
+               	<th:block th:if="${pagination.pages[0].isActive}">
+               		 <li th:text="'Пред.'"
+               		 ></li>
+               	</th:block>
+            
+        <th:block th:each="page: ${pagination.pages}">
+        	
+            <li th:if="${!page.isSkipped && !page.isActive}"
+                th:text="${page.number}"
+                th:onclick="go([[${page.number}]])"
+            ></li>
+            <li th:if="${!page.isSkipped && page.isActive}"
+                th:text="${page.number}"
+                class="active"
+            ></li>
+            <li th:if="${page.isSkipped}"
+                class="skip"
+            ></li>
+        </th:block>
+        <th:block th:if="${!pagination.pages[pagination.pages.length - 1].isActive}">
+            		 <li th:text="'След.'"
+               		 	 th:onclick="go([[${page} + 1]])"
+               		 ></li>
+               	</th:block>
+               	<th:block th:if="${pagination.pages[pagination.pages.length - 1].isActive}">
+               		 <li th:text="'След.'"
+               		 ></li>
+               	</th:block>
+        <li th:text="'Посл.'"
+                th:onclick="go([[${pagination.pages[pagination.pages.length - 1].number}]])"
+            ></li>
+    </ul>
+     
+      <script th:inline="javascript">
+      
+   // перейти на страницу с заданным номером
+      function go(page) {
+          if (page && page >= 1) {
+              document.location.href = page > 1 ? `/homebudget/partners/${page}` : '/homebudget/partners';
+          }
+      }
+   // переход на страницу создания
+      function create() {
+          document.location.href = '/homebudget/partners/create';
+      }   
+      
+   // переход на страницу редактирования
+      function edit(id) {
+          document.location.href = `/homebudget/partners/edit/${id}`;
+      }
+   
+   // удаление пользователя
+      function kill(id) {
+          if (confirm('Вы действительно хотите удалить данного пользователя?')) {
+              preloader(true);
+              $.ajax({
+                  url  : `/homebudget/partners/erase/${id}`,
+                  type : 'DELETE',
+                  data : '{}',
+                  contentType: 'application/json',
+                  success: () => {
+                      preloader(false);
+                      window.location.reload();
+                  },
+                  error: () => {
+                      preloader(false);
+                      window.alert('Не удалось удалить партнера!');
+                  }
+              });
+          }
+      }
+   
+      function search() {
+          const s = $('#seek-value').val();
+          if (s && !/^\s+$/.test(s)) {
+              $('#seek-form').submit();
+          }
+      }
+      
+      function res() {
+    	  const s = /*[[${seek}]]*/ '';
+          if (s) {
+        	  document.location.href = '/homebudget/partners';
+          }
+      }
+      
+
+      function cancel() {
+          $('#seek-value').val('');
+      }
+
+    </script>
+     
+</th:block>
