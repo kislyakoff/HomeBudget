@@ -40,48 +40,7 @@
         </tbody>
      </table>
      
-     <ul class="page-control" th:if="${pagination} != null">
-     		<li th:text="'Перв.'"
-                th:onclick="go([[1]])"
-            ></li>
-           
-            	<th:block th:if="${!pagination.pages[0].isActive}">
-            		 <li th:text="'Пред.'"
-               		 	 th:onclick="go([[${page} - 1]])"
-               		 ></li>
-               	</th:block>
-               	<th:block th:if="${pagination.pages[0].isActive}">
-               		 <li th:text="'Пред.'"
-               		 ></li>
-               	</th:block>
-            
-        <th:block th:each="page: ${pagination.pages}">
-        	
-            <li th:if="${!page.isSkipped && !page.isActive}"
-                th:text="${page.number}"
-                th:onclick="go([[${page.number}]])"
-            ></li>
-            <li th:if="${!page.isSkipped && page.isActive}"
-                th:text="${page.number}"
-                class="active"
-            ></li>
-            <li th:if="${page.isSkipped}"
-                class="skip"
-            ></li>
-        </th:block>
-        <th:block th:if="${!pagination.pages[pagination.pages.length - 1].isActive}">
-            		 <li th:text="'След.'"
-               		 	 th:onclick="go([[${page} + 1]])"
-               		 ></li>
-               	</th:block>
-               	<th:block th:if="${pagination.pages[pagination.pages.length - 1].isActive}">
-               		 <li th:text="'След.'"
-               		 ></li>
-               	</th:block>
-        <li th:text="'Посл.'"
-                th:onclick="go([[${pagination.pages[pagination.pages.length - 1].number}]])"
-            ></li>
-    </ul>
+<th:block th:insert="fragments/common.html :: pagination"></th:block>
      
       <script th:inline="javascript">
       
