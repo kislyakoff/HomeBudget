@@ -1,0 +1,218 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="content">
+
+<form id="seek-form" action="/homebudget/categories" method="get">
+<div class="input-group">
+  	  <button type="button" class="btn btn-outline-success" onclick="create()">
+   								<i class="fas fa-plus"></i>&nbsp;&nbsp;Добавить</button>
+	  <input type="text" class="form-control" placeholder="Поиск по названию" name="seek" id="seek-value">
+	  <button type="button" class="btn btn-outline-success" onclick="search()">OK</button>
+	  <button type="button" class="btn btn-outline-secondary" onclick="cancel()">Отмена</button>
+</div>
+<div class="filter" th:if="${seek != null}">
+        Фильтр поиска:<b th:text="${seek}"></b><i class="fas fa-times text-danger" title="Сбросить" onclick="res()"></i>
+ </div>
+ </form>
+
+	 <table class="table-1">
+        <thead>
+            <tr>
+                <th width="10%">ID</th>
+                <th width="50%">Название</th>
+                <th width="20%">Тип</th>
+                <th width="20%">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<tr th:each="category: ${categories}">
+        		<td th:text="${category.getId()}"></td>
+        		<td th:text="${category.getName()}"></td>
+        		<td th:text="${category.getType() == 
+        			T(by.kislyakoff.HomeBudgetApp.model.dict.CategoryType).INCOME ? 'Приход' : 'Расход'}"></td>
+                <td>
+                    <div class="action">
+                        <div class="action-btn" th:onclick="edit([[${category.id}]], 
+                        				[[${category.name}]], [[${category.type}]])">
+                            <i class="fas fa-edit text-success" title="Редактировать"></i>
+                        </div>
+                        <div class="action-btn" th:onclick="kill([[${category.id}]])">
+                            <i class="fas fa-times text-danger" title="Удалить"></i>
+                        </div>
+                    </div>
+                </td>
+        	
+        	</tr>
+        </tbody>
+     </table>
+     
+     <th:block th:insert="fragments/common.html :: pagination"></th:block>
+     
+      <section class="modal-background">
+      <input type="hidden" id="category-id" value="" />
+        <div class="form-horizontal edit-contact">
+            <div class="form-header">Новая категория</div>
+            <div class="form-row">
+                <label for="category-name" class="form-label required">Название</label>
+                <input type="text" id="category-name" class="form-control" placeholder="" />
+            </div>
+            <div class="invalid-feedback inactive" data-for="category-name">Пожалуйста, укажите название</div>
+            
+            <div class="form-row">
+                <label for="category-type" class="form-label required">Тип</label>
+                <select id="category-type" class="form-select">
+                    <option>&mdash;&mdash;&mdash; выберите &mdash;&mdash;&mdash;</option>
+                    <option value="EXPENCE">Расход</option>
+                    <option value="INCOME">Приход</option>
+                </select>
+            </div>
+            <div class="invalid-feedback inactive" data-for="category-type">Пожалуйста, укажите тип</div>
+            
+            <div class="form-row buttons">
+                <button type="button" class="btn btn-primary" onclick="save()">OK</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="hideCategoryEdit()">Отмена</button>
+            </div>
+        </div>
+    </section>
+     
+      <script th:inline="javascript">
+      
+   // перейти на страницу с заданным номером
+      function go(page) {
+          if (page && page >= 1) {
+              document.location.href = page > 1 ? `/homebudget/categories/${page}` : '/homebudget/categories';
+          }
+      }
+   // создание новой категории
+      function create() {
+    	  $('#category-id').val('');
+          $('.modal-background .form-header').html('Новая категория');
+          $('#category-type').prop('selectedIndex', 0);
+          $('label[for="category-type"]').removeClass('is-invalid');
+          $('#category-type').removeClass('is-invalid');
+          $('label[data-for="category-type"]').addClass('inactive');
+          $('#category-name').val('');
+          $('label[for="category-name"]').removeClass('is-invalid');
+          $('#category-name').removeClass('is-invalid');
+          $('label[data-for="category-name"]').addClass('inactive');
+          showCategoryEdit();
+      }   
+   // редактирование категории
+      function edit(id, name, type) {
+          $('#category-id').val(id);
+          $('.modal-background .form-header').html('Редактирование категории');
+          $('#category-type').val(type);
+          $('label[for="category-type"]').removeClass('is-invalid');
+          $('#category-type').removeClass('is-invalid');
+          $('label[data-for="category-type"]').addClass('inactive');
+          $('#category-name').val(name);
+          $('label[for="category-name"]').removeClass('is-invalid');
+          $('#category-name').removeClass('is-invalid');
+          $('label[data-for="category-name"]').addClass('inactive');
+          showCategoryEdit();
+      }
+   
+      function showCategoryEdit() {
+          $('.modal-background').css('display', 'flex');
+      }
+
+      function hideCategoryEdit() {
+          $('.modal-background').css('display', 'none');
+      }
+      
+      function prepareData() {
+          var isValid = true;
+          if ($('#category-type option:selected').index() === 0) {
+              $('label[for="category-type"]').addClass('is-invalid');
+              $('#category-type').addClass('is-invalid');
+              $('label[data-for="category-type"]').removeClass('inactive');
+              isValid = false;
+          } else {
+              $('label[for="category-type"]').removeClass('is-invalid');
+              $('#category-type').removeClass('is-invalid');
+              $('label[data-for="category-type"]').addClass('inactive');
+          }
+
+          var name = $('#category-name').val();
+          if (isEmpty(name)) {
+              $('label[for="category-name"]').addClass('is-invalid');
+              $('#category-name').addClass('is-invalid');
+              $('label[data-for="category-name"]').removeClass('inactive');
+              isValid = false;
+          } else {
+              $('label[for="category-name"]').removeClass('is-invalid');
+              $('#category-name').removeClass('is-invalid');
+              $('label[data-for="category-name"]').addClass('inactive');
+          }
+
+          return isValid ? {type: $('#category-type').val(), name} : null;
+      }
+      
+      // сохранение категории
+      function save() {
+          const data = prepareData();
+          if (data !== null) {
+              preloader(true);
+              const categoryId = $('#category-id').val();
+              const [url, type] = !categoryId
+                          ? [`/homebudget/categories/create`, 'POST'] // новая категория
+                          : [`/homebudget/categories/edit/${categoryId}`, 'PATCH'] // ранее созданная категория
+                      $.ajax({
+                          url,
+                          type,
+                          data: JSON.stringify(data),
+                          contentType: 'application/json',
+                          success: () => {
+                              window.location.reload();
+                          },
+                          error: () => {
+                              preloader(false);
+                              window.alert('Такая категория уже существует!');
+                          }
+                      });
+          }
+      }
+      
+   
+   // удаление категории
+      function kill(id) {
+          if (confirm('Вы действительно хотите удалить данную категорию?')) {
+              preloader(true);
+              $.ajax({
+                  url  : `/homebudget/categories/erase/${id}`,
+                  type : 'DELETE',
+                  data : '{}',
+                  contentType: 'application/json',
+                  success: () => {
+                      preloader(false);
+                      window.location.reload();
+                  },
+                  error: () => {
+                      preloader(false);
+                      window.alert('Не удалось удалить категорию!');
+                  }
+              });
+          }
+      }
+   
+      function search() {
+          const s = $('#seek-value').val();
+          if (s && !/^\s+$/.test(s)) {
+              $('#seek-form').submit();
+          }
+      }
+      
+      function res() {
+    	  const s = /*[[${seek}]]*/ '';
+          if (s) {
+        	  document.location.href = '/homebudget/categories';
+          }
+      }
+      
+
+      function cancel() {
+          $('#seek-value').val('');
+      }
+
+    </script>
+     
+</th:block>

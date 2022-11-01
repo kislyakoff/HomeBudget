@@ -9,13 +9,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import by.kislyakoff.HomeBudgetApp.model.Category;
+import by.kislyakoff.HomeBudgetApp.model.dict.CategoryType;
 
 @Repository
 public interface CategoriesRepository extends JpaRepository<Category, Integer> {
 	
 	List<Category> findAllByOrderByNameAsc();
 	
-	Optional<Category> findByName(String name);
+	Optional<Category> findByNameAndType(String name, CategoryType type);
 	
 	Page<Category> findByNameContainingIgnoreCase(String name, Pageable pageable);
 

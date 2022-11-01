@@ -315,7 +315,8 @@ button.btn {
 
 .filter {
     font-size: 18px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -620,6 +621,10 @@ ul.page-control > li.skip::after {
 
 .input-group {
 	width: 75%;
+}
+
+#seek-form {
+	margin-bottom: 10px;
 }
 
 .modal-background {

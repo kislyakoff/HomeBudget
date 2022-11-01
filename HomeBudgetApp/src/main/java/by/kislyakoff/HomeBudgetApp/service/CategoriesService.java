@@ -1,6 +1,7 @@
 package by.kislyakoff.HomeBudgetApp.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import by.kislyakoff.HomeBudgetApp.model.Category;
+import by.kislyakoff.HomeBudgetApp.model.dict.CategoryType;
 import by.kislyakoff.HomeBudgetApp.repository.CategoriesRepository;
 
 @Service
@@ -29,6 +31,10 @@ public static int DEFAULT_CATEGORIES_PER_PAGE = 10;
 	@Autowired
 	public CategoriesService(CategoriesRepository categoriesRepository) {
 		this.categoriesRepository = categoriesRepository;
+	}
+	
+	public Category findById(Integer id) {
+		return categoriesRepository.findById(id).orElse(null);
 	}
 	
 	public List<Category> categoriesList() {
@@ -55,6 +61,26 @@ public static int DEFAULT_CATEGORIES_PER_PAGE = 10;
 		return seek == null ?
 				categoriesRepository.findAll(PageRequest.of(page, categoriesPerPage, sort)) :
 					categoriesRepository.findByNameContainingIgnoreCase(seek, PageRequest.of(page, categoriesPerPage, sort));
+	}
+	
+	public Optional<Category> findByNameAndType (String name, CategoryType type) {
+		return categoriesRepository.findByNameAndType(name, type);
+	}
+
+	@Transactional
+	public void create(Category category) {
+		categoriesRepository.save(category);
+	}
+
+	@Transactional
+	public void update(Integer id, Category updatedCategory) {
+		updatedCategory.setId(id);
+		categoriesRepository.save(updatedCategory);
+	}
+	
+	@Transactional
+	public void delete(Integer id) {
+		categoriesRepository.deleteById(id);
 	}
 
 }
