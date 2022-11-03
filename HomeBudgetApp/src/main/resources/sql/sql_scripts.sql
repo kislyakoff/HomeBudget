@@ -26,7 +26,7 @@ CREATE TABLE currency_rate(
 
 CREATE TABLE account(
 	id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	name VARCHAR(64) NOT NULL UNIQUE,
+	name VARCHAR(64) NOT NULL,
 	description VARCHAR(100),
 	person_id INT NOT NULL REFERENCES person(id),
 	currency_id INT NOT NULL REFERENCES currency(id),
@@ -66,6 +66,8 @@ INSERT INTO person(username, password)
 	
 INSERT INTO currency(currency_code) VALUES (933);
 INSERT INTO currency(currency_code) VALUES (840);
+INSERT INTO currency(currency_code) VALUES (978);
+INSERT INTO currency(currency_code) VALUES (643);
 
 -- функция для триггера автообновления колонки updated_at
 CREATE OR REPLACE FUNCTION update_updated_at()
