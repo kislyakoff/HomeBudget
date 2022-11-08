@@ -82,22 +82,21 @@
 	                <a class="active" th:if="${route == 'users'}">Пользователи</a>
 	                <a href="/homebudget/users" th:unless="${route == 'users'}">Пользователи</a>
 	            </li>
-	            <th:block th:fragment="usermenu">
-			        <li>
-		                <a class="active" th:if="${route == 'list'}">Список</a>
-		                <a href="/list" th:unless="${route == 'list'}">Список</a>
+	        </ul>
+	        <th:block th:fragment="usermenu">
+	        
+	        	<em><i class="fas fa-donate"></i> Финансы</em>
+	       		<ul>
+		       		<li>
+		                <a class="active" th:if="${route == 'accounts'}">Счета</a>
+		                <a href="/homebudget/accounts" th:unless="${route == 'accounts'}">Счета</a>
 		            </li>
 		            <li>
-		                <a class="active" th:if="${route == 'seek'}">Поиск</a>
-		                <a href="/seek" th:unless="${route == 'seek'}">Поиск</a>
+		                <a class="active" th:if="${route == 'transactions'}">Тразакции</a>
+		                <a href="/homebudget/transactions" th:unless="${route == 'transactions'}">Транзакции</a>
 		            </li>
-		            <li>
-		                <a class="active" th:if="${route == 'create'}">Создать</a>
-		                <a href="/create" th:unless="${route == 'create'}">Создать</a>
-		            </li>
-		           </th:block>
-	       	</ul>
-	       	<em><i class="fas fa-book"></i> Справочник</em>
+	            </ul>
+		    	<em><i class="fas fa-book"></i> Справочник</em>
 	       		<ul>
 		       		<li>
 		                <a class="active" th:if="${route == 'partners'}">Партнеры</a>
@@ -108,14 +107,11 @@
 		                <a href="/homebudget/categories" th:unless="${route == 'categories'}">Категории</a>
 		            </li>
 	            </ul>
-	            
+		    </th:block>
         </th:block>
         
         <th:block sec:authorize="hasAuthority('USER')">
-	        <em><i class="fas fa-user-tie"></i> Меню пользователя</em>
-	        <ul>
-	            <th:block th:insert=":: usermenu"></th:block>
-	        </ul>
+            <th:block th:insert=":: usermenu"></th:block>
         </th:block>
         
     </div>
