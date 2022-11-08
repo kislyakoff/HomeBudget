@@ -55,7 +55,7 @@
                 <label for="category-name" class="form-label required">Название</label>
                 <input type="text" id="category-name" class="form-control" placeholder="" />
             </div>
-            <div class="invalid-feedback inactive" data-for="category-name">Пожалуйста, укажите название</div>
+            <div class="invalid-feedback inactive" id="category-name-miss">Пожалуйста, укажите название</div>
             
             <div class="form-row">
                 <label for="category-type" class="form-label required">Тип</label>
@@ -65,8 +65,8 @@
                     <option value="INCOME">Приход</option>
                 </select>
             </div>
-            <div class="invalid-feedback inactive" data-for="category-type">Пожалуйста, укажите тип</div>
-            
+<!--             <div class="invalid-feedback inactive" data-for="category-type">Пожалуйста, укажите тип</div> -->
+            <div class="invalid-feedback inactive" id="category-type-miss">Пожалуйста, укажите тип</div>
             <div class="form-row buttons">
                 <button type="button" class="btn btn-primary" onclick="save()">OK</button>
                 <button type="button" class="btn btn-outline-secondary" onclick="hideCategoryEdit()">Отмена</button>
@@ -89,11 +89,11 @@
           $('#category-type').prop('selectedIndex', 0);
           $('label[for="category-type"]').removeClass('is-invalid');
           $('#category-type').removeClass('is-invalid');
-          $('label[data-for="category-type"]').addClass('inactive');
+          $('#category-type-miss').addClass('inactive');
           $('#category-name').val('');
           $('label[for="category-name"]').removeClass('is-invalid');
           $('#category-name').removeClass('is-invalid');
-          $('label[data-for="category-name"]').addClass('inactive');
+          $('#category-name-miss').addClass('inactive');
           showCategoryEdit();
       }   
    // редактирование категории
@@ -103,11 +103,11 @@
           $('#category-type').val(type);
           $('label[for="category-type"]').removeClass('is-invalid');
           $('#category-type').removeClass('is-invalid');
-          $('label[data-for="category-type"]').addClass('inactive');
+          $('#category-type-miss').addClass('inactive');
           $('#category-name').val(name);
           $('label[for="category-name"]').removeClass('is-invalid');
           $('#category-name').removeClass('is-invalid');
-          $('label[data-for="category-name"]').addClass('inactive');
+          $('#category-name-miss').addClass('inactive');
           showCategoryEdit();
       }
    
@@ -124,24 +124,24 @@
           if ($('#category-type option:selected').index() === 0) {
               $('label[for="category-type"]').addClass('is-invalid');
               $('#category-type').addClass('is-invalid');
-              $('label[data-for="category-type"]').removeClass('inactive');
+              $('#category-type-miss').removeClass('inactive');
               isValid = false;
           } else {
               $('label[for="category-type"]').removeClass('is-invalid');
               $('#category-type').removeClass('is-invalid');
-              $('label[data-for="category-type"]').addClass('inactive');
+              $('#category-type-miss').addClass('inactive');
           }
 
           var name = $('#category-name').val();
           if (isEmpty(name)) {
               $('label[for="category-name"]').addClass('is-invalid');
               $('#category-name').addClass('is-invalid');
-              $('label[data-for="category-name"]').removeClass('inactive');
+              $('#category-name-miss').removeClass('inactive');
               isValid = false;
           } else {
               $('label[for="category-name"]').removeClass('is-invalid');
               $('#category-name').removeClass('is-invalid');
-              $('label[data-for="category-name"]').addClass('inactive');
+              $('#category-name-miss').addClass('inactive');
           }
 
           return isValid ? {type: $('#category-type').val(), name} : null;
