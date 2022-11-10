@@ -26,9 +26,8 @@
         <th:block th:case="partners">Список партнеров</th:block>
         <th:block th:case="edit_partner">Редактирование партнера</th:block>
         <th:block th:case="create_partner">Новый партнер</th:block>
-        <th:block th:case="categories">Список категорий</th:block>
-        <th:block th:case="edit_category">Редактирование категории</th:block>
-        <th:block th:case="create_category">Новая_категория</th:block>
+        <th:block th:case="categories">Категории</th:block>
+        <th:block th:case="accounts">Счета</th:block>
         <th:block th:case="*">Unknown!</th:block>
         | Home Budget App
     </title>
@@ -60,15 +59,15 @@
                 <span th:case="edit_partner">Редактирование</span>
             </th:block>
         </th:block>
-        <th:block th:if="${route} == 'categories' OR 
-        				${route} == 'create_category' OR ${route} == 'edit_category'">
+        <th:block th:if="${route} == 'categories'">
             <a href="/homebudget/categories">Категории</a>
             <i class="fas fa-chevron-right"></i>
-            <th:block th:switch="${route}">
-                <span th:case="categories">Список</span>
-                <span th:case="create_category">Новая</span>
-                <span th:case="edit_category">Редактирование</span>
-            </th:block>
+            <span>Список</span>
+        </th:block>
+        <th:block th:if="${route} == 'accounts'">
+            <a href="/homebudget/accounts">Счета</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Список</span>
         </th:block>
     </h3>
 </th:block>
