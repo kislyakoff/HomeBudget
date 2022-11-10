@@ -2,7 +2,6 @@ package by.kislyakoff.HomeBudgetApp.controllers;
 
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import by.kislyakoff.HomeBudgetApp.dto.CategoryDTO;
 import by.kislyakoff.HomeBudgetApp.model.Category;
 import by.kislyakoff.HomeBudgetApp.service.CategoriesService;
 import by.kislyakoff.HomeBudgetApp.util.helpers.PaginationHelper;
@@ -31,13 +29,11 @@ import by.kislyakoff.HomeBudgetApp.util.validators.CategoryValidator;
 public class CategoriesController {
 	
 	private final CategoriesService categoriesService;
-	private final ModelMapper modelMapper;
 	private final CategoryValidator categoryValidator;
 	
 	@Autowired	
-	public CategoriesController(CategoriesService categoriesService, ModelMapper modelMapper, CategoryValidator categoryValidator) {
+	public CategoriesController(CategoriesService categoriesService, CategoryValidator categoryValidator) {
 		this.categoriesService = categoriesService;
-		this.modelMapper = modelMapper;
 		this.categoryValidator = categoryValidator;
 	}
 
@@ -64,8 +60,7 @@ public class CategoriesController {
 
 	@PostMapping("/create")
 	@ResponseBody
-	public ResponseEntity<HttpStatus> create(@RequestBody CategoryDTO categoryDTO, BindingResult bindingResult) {
-		Category category = convertToCategory(categoryDTO);
+	public ResponseEntity<HttpStatus> create(@RequestBody Category category, BindingResult bindingResult) {
 
 		categoryValidator.validate(category, bindingResult);
 		
@@ -79,9 +74,8 @@ public class CategoriesController {
 	
 	@PatchMapping("edit/{id}")
 	@ResponseBody
-	public ResponseEntity<HttpStatus> edit(@PathVariable Integer id, @RequestBody CategoryDTO categoryDTO, 
+	public ResponseEntity<HttpStatus> edit(@PathVariable Integer id, @RequestBody Category category, 
 															BindingResult bindingResult) {
-		Category category = convertToCategory(categoryDTO);
 
 		categoryValidator.validate(category, bindingResult);
 		
@@ -100,11 +94,6 @@ public class CategoriesController {
 		categoriesService.delete(id);
 		
 		return ResponseEntity.ok(HttpStatus.OK);
-	}
-	
-	
-	private Category convertToCategory(CategoryDTO categoryDTO) {
-		return modelMapper.map(categoryDTO, Category.class);
 	}
 
 }

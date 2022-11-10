@@ -144,7 +144,7 @@
               $('#category-name-miss').addClass('inactive');
           }
 
-          return isValid ? {type: $('#category-type').val(), name} : null;
+          return isValid ? {id: $('#category-id').val(), type: $('#category-type').val(), name} : null;
       }
       
       // сохранение категории
