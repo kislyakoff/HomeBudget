@@ -623,6 +623,18 @@ ul.page-control > li.skip::after {
 	width: 75%;
 }
 
+nav.navbar {
+	width: 75%;
+}
+
+.d-flex {
+	margin-bottom: 0px;
+}
+
+.form-check-input-reverse{
+ margin-left: 5px;
+}
+
 #seek-form {
 	margin-bottom: 10px;
 }
