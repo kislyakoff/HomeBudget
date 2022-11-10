@@ -22,7 +22,7 @@ public class Account {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "name") // TODO Validator unique name
+	@Column(name = "name") 
 	@NotBlank(message = "Please specify the name")
 	private String name;
 	
@@ -38,7 +38,7 @@ public class Account {
 	private Currency currency;
 	
 	@Column(name = "currency_code")
-	private CurrencyName currencyName;
+	private CurrencyName currencyCode;
 	
 	@Column(name = "active")
 	private Boolean active;
@@ -86,12 +86,12 @@ public class Account {
 		this.currency = currency;
 	}
 
-	public CurrencyName getCurrencyName() {
-		return currencyName;
+	public CurrencyName getCurrencyCode() {
+		return currencyCode;
 	}
 
-	public void setCurrencyName(CurrencyName currencyName) {
-		this.currencyName = currencyName;
+	public void setCurrencyName(CurrencyName currencyCode) {
+		this.currencyCode = currencyCode;
 	}
 
 	public Boolean getActive() {
