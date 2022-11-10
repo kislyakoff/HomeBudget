@@ -35,6 +35,9 @@ CREATE TABLE account(
 	include_in_total BOOLEAN NOT NULL
 );
 
+INSERT INTO account(name, description, person_id, currency_id, currency_code, active, include_in_total)
+	VALUES ('Наличные', 'Родной православный любимый наличман', 2, 2, 840, true, true);
+
 CREATE TABLE category(
 	id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 	name VARCHAR(64) NOT NULL,
