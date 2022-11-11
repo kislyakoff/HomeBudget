@@ -28,6 +28,7 @@
         <th:block th:case="create_partner">Новый партнер</th:block>
         <th:block th:case="categories">Категории</th:block>
         <th:block th:case="accounts">Счета</th:block>
+        <th:block th:case="transactions">Транзакции</th:block>
         <th:block th:case="*">Unknown!</th:block>
         | Home Budget App
     </title>
@@ -66,6 +67,11 @@
         </th:block>
         <th:block th:if="${route} == 'accounts'">
             <a href="/homebudget/accounts">Счета</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Список</span>
+        </th:block>
+        <th:block th:if="${route} == 'transactions'">
+            <a href="/homebudget/accounts">Транзакции</a>
             <i class="fas fa-chevron-right"></i>
             <span>Список</span>
         </th:block>
