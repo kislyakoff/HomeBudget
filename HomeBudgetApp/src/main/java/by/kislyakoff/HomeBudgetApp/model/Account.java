@@ -1,5 +1,7 @@
 package by.kislyakoff.HomeBudgetApp.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,6 +47,9 @@ public class Account {
 	
 	@Column(name = "include_in_total")
 	private Boolean includeInTotal;
+	
+	@Column(name = "balance")
+	private BigDecimal balance;
 
 	public Integer getId() {
 		return id;
@@ -90,7 +95,7 @@ public class Account {
 		return currencyCode;
 	}
 
-	public void setCurrencyName(CurrencyName currencyCode) {
+	public void setCurrencyCode(CurrencyName currencyCode) {
 		this.currencyCode = currencyCode;
 	}
 
@@ -108,6 +113,14 @@ public class Account {
 
 	public void setIncludeInTotal(Boolean includeInTotal) {
 		this.includeInTotal = includeInTotal;
+	}
+
+	public BigDecimal getBalance() {
+		return balance;
+	}
+
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
 	}
 	
 }
