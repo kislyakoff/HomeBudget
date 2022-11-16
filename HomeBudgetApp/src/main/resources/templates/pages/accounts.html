@@ -21,7 +21,8 @@
             <tr>
                 <th width="20%">Название</th>
                 <th width="10%">Валюта</th>
-                <th width="40%">Информация</th>
+                <th width="10%">Баланс</th>
+                <th width="30%">Информация</th>
                 <th width="15%">Вкл. в баланс</th>
                 <th width="15%">Действия</th>
             </tr>
@@ -30,7 +31,7 @@
         	<tr th:each="account: ${accounts}">
         		<td th:text="${account.getName()}"></td>
         		<td th:text="${account.getCurrencyCode()}"></td>
-        		
+        		<td th:text="${account.getBalance()}"></td>
         		<td>
                     <section class="info">
                    		<div class="info-row">
@@ -51,9 +52,10 @@
         		</td>
                 <td>
                     <div class="action">
-                        <div class="action-btn" th:onclick="edit([[${account.id}]], 
-                 						 [[${account.name}]], [[${account.description}]], 
-                 					[[${account.currencyCode}]], [[${account.includeInTotal}]], [[${account.active}]])">
+                        <div class="action-btn" th:onclick="edit([[${account.id}]], [[${account.name}]], 
+                        			[[${account.description}]], [[${account.currencyCode}]], 
+                        			[[${account.includeInTotal}]], [[${account.active}]], 
+                        			[[${account.balance}]])">
                             <i class="fas fa-edit text-success" title="Редактировать"></i>
                         </div>
                         <div class="action-btn" th:onclick="trash([[${account.id}]], [[${account.active}]])">
@@ -77,7 +79,7 @@
             <div class="form-header">Новый счет</div>
             <div class="form-row">
                 <label for="account-name" class="form-label required">Название</label>
-                <input type="text" id="account-name" class="form-control" placeholder="" />
+                <input type="text" id="account-name" class="form-control" />
             </div>
             <div class="invalid-feedback inactive" id="account-name-miss">Пожалуйста, укажите название</div>
             
@@ -90,7 +92,10 @@
                 </select>
             </div>
             <div class="invalid-feedback inactive" id="currency-type-miss">Пожалуйста, укажите валюту счета</div>
-             
+            <div class="form-row">
+                <label for="account-balance" class="form-label">Баланс</label>
+                <input type="number" id="account-balance" class="form-control" disabled/>
+            </div> 
             <div class="form-row">
                 <label for="account-description" class="form-label required">Описание</label>
                 <textarea id="account-description" class="form-control" placeholder=""></textarea>
@@ -151,6 +156,7 @@
       function create() {
     	  $('#account-id').val('');
     	  $('#account-active').val(true);
+    	  $('#account-balance').val("0.00");
           $('.modal-background .form-header').html('Новый счет');
           $('#currency-type').prop('selectedIndex', 0);
           $('label[for="currency-type"]').removeClass('is-invalid');
@@ -168,9 +174,10 @@
           showAccountEdit();
       }   
    // редактирование счета
-      function edit(id, name, description, currencyCode, includeInTotal, active) {
+      function edit(id, name, description, currencyCode, includeInTotal, active, balance) {
           $('#account-id').val(id);
           $('#account-active').val(active);
+          $('#account-balance').val(balance);
 	          $.ajax({
 	              url  : `/homebudget/accounts/check/${id}`,
 	              type : 'GET',
@@ -247,7 +254,7 @@
           
 
           return isValid ? {id: $('#account-id').val(), currencyCode: $('#currency-type').val(), active: $('#account-active').val(), 
-        	  											name, description, includeInTotal} : null;
+        	  					name, description, includeInTotal, balance: $('#account-balance').val()} : null;
       }
       
       // сохранение счета
