@@ -1,5 +1,7 @@
 package by.kislyakoff.HomeBudgetApp.dto;
 
+import java.math.BigDecimal;
+
 import by.kislyakoff.HomeBudgetApp.model.dict.CurrencyName;
 
 public class AccountDTO {
@@ -15,6 +17,8 @@ public class AccountDTO {
 	private Boolean active;
 	
 	private Boolean includeInTotal;
+	
+	private BigDecimal balance;
 	
 	
 	public String getId() {
@@ -52,6 +56,12 @@ public class AccountDTO {
 	}
 	public void setIncludeInTotal(Boolean includeInTotal) {
 		this.includeInTotal = includeInTotal;
+	}
+	public BigDecimal getBalance() {
+		return balance;
+	}
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
 	}
 	
 	
