@@ -181,7 +181,7 @@
 	          $.ajax({
 	              url  : `/homebudget/accounts/check/${id}`,
 	              type : 'GET',
-	              contentType: 'application/json',
+	              dataType: "json",
 	              success: (data) => {
 	            	  if (data === false)
 	            		  $('#currency-type').prop("disabled", true);
