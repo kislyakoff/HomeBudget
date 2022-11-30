@@ -1,5 +1,7 @@
 package by.kislyakoff.HomeBudgetApp.controllers;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import by.kislyakoff.HomeBudgetApp.dto.CategoryDTO;
 import by.kislyakoff.HomeBudgetApp.model.Category;
 import by.kislyakoff.HomeBudgetApp.service.CategoriesService;
 import by.kislyakoff.HomeBudgetApp.util.helpers.PaginationHelper;
@@ -94,6 +97,13 @@ public class CategoriesController {
 		categoriesService.delete(id);
 		
 		return ResponseEntity.ok(HttpStatus.OK);
+	}
+	
+	@GetMapping("/list")
+	@ResponseBody
+	public Map<String, List<CategoryDTO>> categoriesMapForTransaction() {
+		
+		return categoriesService.getMapForTransaction();
 	}
 
 }
