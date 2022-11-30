@@ -1,5 +1,6 @@
 package by.kislyakoff.HomeBudgetApp.controllers;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import by.kislyakoff.HomeBudgetApp.dto.AccountDTO;
+import by.kislyakoff.HomeBudgetApp.dto.projections.AccountView;
 import by.kislyakoff.HomeBudgetApp.model.Account;
 import by.kislyakoff.HomeBudgetApp.model.Person;
 import by.kislyakoff.HomeBudgetApp.service.AccountsService;
@@ -127,6 +129,13 @@ public class AccountsController {
 		
 		
 		return accountsService.isEmpty(id);
+	}
+	
+	@GetMapping("/list")
+	@ResponseBody
+	public List<AccountView> accountsListForTransaction(@AuthenticationPrincipal(expression = "id") Integer id) {
+		
+		return accountsService.accountsListActiveForTransaction(id);
 	}
 	
 	private Account convertToAccount(AccountDTO accountDTO) {
