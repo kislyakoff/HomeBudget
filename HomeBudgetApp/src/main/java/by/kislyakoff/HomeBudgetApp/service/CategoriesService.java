@@ -1,8 +1,11 @@
 package by.kislyakoff.HomeBudgetApp.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import by.kislyakoff.HomeBudgetApp.dto.CategoryDTO;
 import by.kislyakoff.HomeBudgetApp.model.Category;
 import by.kislyakoff.HomeBudgetApp.model.dict.CategoryType;
 import by.kislyakoff.HomeBudgetApp.repository.CategoriesRepository;
@@ -27,10 +31,12 @@ public static int DEFAULT_CATEGORIES_PER_PAGE = 10;
     }
 	
 	private final CategoriesRepository categoriesRepository;
+	private final ModelMapper modelMapper;
 
 	@Autowired
-	public CategoriesService(CategoriesRepository categoriesRepository) {
+	public CategoriesService(CategoriesRepository categoriesRepository, ModelMapper modelMapper) {
 		this.categoriesRepository = categoriesRepository;
+		this.modelMapper = modelMapper;
 	}
 	
 	public Category findById(Integer id) {
@@ -81,6 +87,22 @@ public static int DEFAULT_CATEGORIES_PER_PAGE = 10;
 	@Transactional
 	public void delete(Integer id) {
 		categoriesRepository.deleteById(id);
+	}
+
+	
+	public Map<String, List<CategoryDTO>> getMapForTransaction() {
+	
+		List<Category> list = categoriesRepository.findAllByOrderByNameAsc();
+		
+		Map<String, List<CategoryDTO>> catMap = list.stream()
+						.collect(Collectors.groupingBy(e -> e.getType().getType(), 
+								Collectors.mapping(this::convertToCategoryDTO, Collectors.toList())));
+		
+		return catMap;
+	}
+
+	private CategoryDTO convertToCategoryDTO(Category category) {
+		return modelMapper.map(category, CategoryDTO.class);
 	}
 
 }
