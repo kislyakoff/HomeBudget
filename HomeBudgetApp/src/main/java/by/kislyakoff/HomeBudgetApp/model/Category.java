@@ -18,7 +18,7 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "name") //TODO unique validate
+	@Column(name = "name")
 	private String name;
 	
 	@Column(name = "category_type")
