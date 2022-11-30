@@ -17,8 +17,10 @@
 		                    </div>
 		                    <div class="body">
 		                        <th:block th:insert="fragments/common.html :: breadcrumbs(${route})"></th:block>
+		                        
 
 		                        <th:block th:insert="fragments/common.html :: menu(${route})"></th:block>
+		                        
 
 		                        <div class="content" id="content">
 		                            <th:block th:switch="${route}">
@@ -32,11 +34,10 @@
 		                                <th:block th:case="edit" th:insert="pages/edit.html :: content(${route})"></th:block>
 		                                <th:block th:case="edit_partner" th:insert="pages/edit_partner.html :: content(${route})"></th:block>
 		                                <th:block th:case="create_partner" th:insert="pages/edit_partner.html :: content(${route})"></th:block>
-<!-- 		                                <th:block th:case="seek" th:insert="pages/seek.html :: content"></th:block> -->
-<!-- 		                                <th:block th:case="contacts" th:insert="pages/contacts.html :: content"></th:block> -->
 
-<!-- 		                                <div th:case="*">Unknown!</div> -->
+		                                <div th:case="*">Unknown!</div>
 		                            </th:block>
+		                            
 		                        </div>
 		                    </div>
 		                </div>
