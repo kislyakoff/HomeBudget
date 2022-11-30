@@ -10,7 +10,6 @@
 			  <label class="form-check-label">Отображать закрытые</label>
 			  <input class="form-check-input-reverse" type="checkbox" th:checked="${show}" 
 			  								name="show" id="show-value"	th:onclick="showclosed()">
-<!-- 			  										TODO shoclosed() script -->
 			</div>
     </form>
   </div>
@@ -211,6 +210,7 @@
 
       function hideAccountEdit() {
           $('.modal-background').css('display', 'none');
+          $('#currency-type').prop("disabled", false);
       }
       
       function prepareData() {
@@ -247,7 +247,7 @@
           } else {
               $('label[for="account-description"]').removeClass('is-invalid');
               $('#account-description').removeClass('is-invalid');
-              $('#account-description').addClass('inactive');
+              $('#account-description-miss').addClass('inactive');
           }
           
           var includeInTotal = $('#account-is-included').prop('checked');
