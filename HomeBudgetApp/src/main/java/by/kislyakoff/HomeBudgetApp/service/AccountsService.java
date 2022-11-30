@@ -4,15 +4,18 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import by.kislyakoff.HomeBudgetApp.dto.projections.AccountView;
 import by.kislyakoff.HomeBudgetApp.model.Account;
 import by.kislyakoff.HomeBudgetApp.model.Person;
 import by.kislyakoff.HomeBudgetApp.model.dict.CurrencyName;
 import by.kislyakoff.HomeBudgetApp.repository.AccountsRepository;
 import by.kislyakoff.HomeBudgetApp.repository.CurrenciesRepository;
 import by.kislyakoff.HomeBudgetApp.repository.TransactionsRepository;
+import by.kislyakoff.HomeBudgetApp.security.PersonDetails;
 
 @Service
 @Transactional(readOnly = true)
@@ -35,6 +38,10 @@ public class AccountsService {
 	
 	public List<Account> accountsListActive(Integer id) {
 		return accountsRepository.findByPersonIdAndActiveTrueOrderByNameAsc(id);
+	}
+	
+	public List<AccountView> accountsListActiveForTransaction(Integer id) {
+		return accountsRepository.findByPersonIdAndActiveTrue(id);
 	}
 
 	@Transactional
@@ -82,7 +89,8 @@ public class AccountsService {
 	}
 	
 	public boolean isExists(String name, CurrencyName currency) {
-		return accountsRepository.existsByNameAndCurrencyCode(name, currency);
+		Integer id = ((PersonDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+		return accountsRepository.existsByNameAndCurrencyCodeAndPersonId(name, currency, id);
 	}
 	
 	public Account findById(int id) {
