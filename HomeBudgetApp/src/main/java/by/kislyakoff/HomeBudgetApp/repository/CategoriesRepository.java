@@ -19,5 +19,5 @@ public interface CategoriesRepository extends JpaRepository<Category, Integer> {
 	Optional<Category> findByNameAndType(String name, CategoryType type);
 	
 	Page<Category> findByNameContainingIgnoreCase(String name, Pageable pageable);
-
+	
 }
