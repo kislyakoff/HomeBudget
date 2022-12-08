@@ -1,6 +1,6 @@
-<!doctype html>
+<th:block th:fragment="default(route)">
+<!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-	<th:block th:fragment="default(route)">
 		<head>
 	<th:block th:insert="fragments/common.html :: meta"></th:block>
 	<th:block th:insert="fragments/common.html :: styles"></th:block>
@@ -47,5 +47,6 @@
 
 		<th:block th:insert="fragments/common.html :: scripts"></th:block>
 	</body>
+	</html>
 </th:block>
-</html>
+
