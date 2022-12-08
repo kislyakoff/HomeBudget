@@ -1,6 +1,6 @@
 <th:block th:fragment="content">
     <div class="form-horizontal welcome">
-        <div class="form-header">Добро пожаловать</div>
+        <div class="form-header" id="test-case">Добро пожаловать, [[${#httpServletRequest.remoteUser}]]!</div>
         <div class="form-row info">
             Вы успешно авторизовались в системе!
         </div>
