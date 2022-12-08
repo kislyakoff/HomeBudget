@@ -1,5 +1,6 @@
 package by.kislyakoff.HomeBudgetApp.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -105,6 +106,12 @@ public class PartnersController {
 		partnersService.delete(id);
 		
 		return ResponseEntity.ok(HttpStatus.OK);
+	}
+	
+	@GetMapping("/list")
+	@ResponseBody
+	public List<Partner> listForTransactions() {
+		return partnersService.partnersList();
 	}
 
 }
