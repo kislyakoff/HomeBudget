@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import by.kislyakoff.HomeBudgetApp.model.dict.Role;
 
@@ -44,7 +45,8 @@ public class Person {
 	// updatable = false because by default when save() updated person createdAt will set null
 	private LocalDateTime createdAt;
 	
-	@Column(name = "updated_at")
+	@UpdateTimestamp
+	@Column(name = "updated_at", insertable = false)
 	private LocalDateTime updatedAt;
 	
 	@Column(name= "active")
