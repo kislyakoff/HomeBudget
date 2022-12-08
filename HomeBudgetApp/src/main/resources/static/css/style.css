@@ -337,8 +337,8 @@ button.btn {
 }
 
 table.table-1 {
-    width: 75%;
     border-bottom: 1px solid #808053;
+    min-width: 85%;
 }
 
 table.table-1 > thead > tr > th {
@@ -401,13 +401,92 @@ table.table-1 > tbody > tr > td > section.info > .info-row {
     font-size: 18px;
 }
 table.table-1 > tbody > tr > td > section.info > .info-row > .caption {
-    width: 120px;
+    width: 20%;
     font-weight: 500;
 }
 table.table-1 > tbody > tr > td > section.info > .info-row > .data {
     font-weight: normal;
+    max-width: fit-content;
+    margin-left: 5%;
 }
-table.table-1 > tbody > tr > td > .contact-icon {
+
+table.table-2 {
+    border-bottom: 1px solid #808053;
+    min-width: 85%;
+}
+
+table.table-2 > thead > tr > th {
+    box-sizing: border-box;
+    padding: 5px 15px;
+    text-align: left;
+    background-color: #808053;
+    color: #f2f0e6;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+table.table-2 thead > tr > th:nth-child(3) { 
+	text-align: end; 
+}
+table.table-2 > tbody > tr:nth-child(odd) {
+    background-color: #f2f0e6;
+}
+table.table-2 > tbody > tr:nth-child(even) {
+    background-color: #e5e4da;
+}
+table.table-2 > tbody > tr > td {
+    box-sizing: border-box;
+    padding: 10px 15px;
+    text-align: left;
+    color: #333;
+    font-size: 18px;
+    font-weight: normal;
+    vertical-align: top;
+}
+table.table-2 > tbody > tr > td:nth-child(3) {
+	text-align: end; 
+
+}
+table.table-2 > tbody > tr > td > input[type="checkbox"] {
+    cursor: pointer;
+    margin-left: 0;
+}
+table.table-2 > tbody > tr > td > input[type="checkbox"]:checked {
+    opacity: 0.6;
+}
+table.table-2 > tbody > tr > td > input[type="checkbox"]:checked:hover {
+    opacity: 1.0;
+}
+table.table-2 > tbody > tr > td > .action {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+table.table-2 > tbody > tr > td > .action > .action-btn {
+    cursor: pointer;
+    font-size: 25px;
+    opacity: 0.6;
+    display: flex;
+    width: 35px;
+    height: 30px;
+    align-items: flex-end;
+    justify-content: center;
+}
+table.table-2 > tbody > tr > td > .action > .action-btn:hover {
+    opacity: 1;
+}
+table.table-2 > tbody > tr > td > section.info > .info-row {
+    margin: 3px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 18px;
+}
+table.table-2 > tbody > tr > td > p {
+    font-weight: normal;
+    max-width: fit-content;
+}
+/* table.table-1 > tbody > tr > td > .contact-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -450,7 +529,7 @@ table.table-1 > tbody > tr > td > .contact-icon.youtube::after {
 }
 table.table-1 > tbody > tr > td > .contact-icon.vk::after {
     content: '\f189';
-}
+} */
 
 .button-controls {
     margin-bottom: 10px;
@@ -615,16 +694,14 @@ ul.page-control > li.skip::after {
   	font-size: 12px;
  	 line-height: 15px;
  	 margin-left: 200px;
-/*  	 position: relative; */
-/*  	 right: 20px; */
 }
 
 .input-group {
-	width: 75%;
+	width: 85%;
 }
 
 nav.navbar {
-	width: 75%;
+	width: 85%;
 }
 
 .d-flex {
@@ -633,6 +710,10 @@ nav.navbar {
 
 .form-check-input-reverse{
  margin-left: 5px;
+}
+
+.input-group-append {
+  cursor: pointer;
 }
 
 #seek-form {
@@ -676,6 +757,49 @@ nav.navbar {
 .modal-background > .alert i.fas {
     display: inline-block;
     font-size: 30px !important;
+}
+/* transaction modal*/
+.transaction-modal .nav {
+    margin-bottom: 10px;
+}
+.transaction-modal .nav-link.active {
+    background-color: #ddddcd;
+}
+.transaction-modal .nav-tabs .nav-link {
+    color: #1f1f1e;
+    font-weight: 400;
+}
+.transaction-modal .tab-content .form-row {
+    display: flex;
+    padding: 5px 15px;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+.transaction-modal .tab-content .form-row label {
+    font-weight: 500;
+    width: 250px;
+}
+.transaction-modal .tab-content .form-row.checkbox {
+    justify-content: flex-start;
+}
+.transaction-modal .tab-content .form-row.checkbox label {
+    width: 187px;
+}
+.transaction-modal .tab-content .form-row.buttons {
+    padding: 20px 15px 15px 15px;
+    justify-content: center;
+    align-items: flex-end;
+}
+.transaction-modal .tab-content .form-row.buttons button {
+    margin-right: 5px;
+}
+.transaction-modal .tab-content .form-row.buttons button:last-child{
+    margin-right: 0;
+}
+
+.transaction-modal p.comment-hyper {
+    padding: 5px 15px;
 }
 
 /* Прелоадер */
