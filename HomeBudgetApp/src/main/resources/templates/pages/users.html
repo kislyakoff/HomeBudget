@@ -83,23 +83,37 @@
    
    // удаление пользователя
       function kill(id) {
-          if (confirm('Вы действительно хотите удалить данного пользователя?')) {
-              preloader(true);
-              $.ajax({
-                  url  : `/homebudget/users/erase/${id}`,
-                  type : 'DELETE',
-                  data : '{}',
-                  contentType: 'application/json',
-                  success: () => {
-                      preloader(false);
-                      window.location.reload();
-                  },
-                  error: () => {
-                      preloader(false);
-                      window.alert('Не удалось удалить пользователя!');
-                  }
-              });
-          }
+    	  $.ajax({
+    		  url  : `/homebudget/accounts/check-owned/${id}`,
+              type : 'GET',
+              contentType: 'application/json',
+              success: (data) => {
+            	  if (data === false) {
+              		// проверка пользователя на наличие счетов и разрешение удаление при отсутствии
+                     if (confirm('Вы действительно хотите удалить данного пользователя?')) {
+			              preloader(true);
+			              $.ajax({
+			                  url  : `/homebudget/users/erase/${id}`,
+			                  type : 'DELETE',
+			                  data : '{}',
+			                  contentType: 'application/json',
+			                  success: () => {
+			                      preloader(false);
+			                      window.location.reload();
+			                  },
+			                  error: () => {
+			                      preloader(false);
+			                      window.alert('Не удалось удалить пользователя!');
+			                  }
+			              });
+         			}   
+              	  }
+            	  else if (data === true) {
+            		  window.alert('Нельзя удалить пользователя при наличии у него счетов');
+            	  }
+              }
+    	  });
+          
       }
    
    
