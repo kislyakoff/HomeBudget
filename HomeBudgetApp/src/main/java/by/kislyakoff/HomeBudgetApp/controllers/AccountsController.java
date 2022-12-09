@@ -125,10 +125,18 @@ public class AccountsController {
 	
 	@GetMapping("/check/{id}")
 	@ResponseBody
-	public boolean checkIsEmpty(@PathVariable Integer id) {
+	public boolean checkIsEmpty(@PathVariable int id) {
 		
 		
 		return accountsService.isEmpty(id);
+	}
+	
+	@GetMapping("/check-owned/{id}")
+	@ResponseBody
+	public boolean checkIsOwned(@PathVariable int id) {
+		
+		
+		return accountsService.isOwned(id);
 	}
 	
 	@GetMapping("/list")

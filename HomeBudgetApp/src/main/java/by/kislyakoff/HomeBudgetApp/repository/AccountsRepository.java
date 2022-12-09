@@ -16,4 +16,5 @@ public interface AccountsRepository extends JpaRepository<Account, Integer> {
 	List<Account> findByPersonIdAndActiveTrueOrderByNameAsc(Integer id);
 	boolean existsByNameAndCurrencyCodeAndPersonId(String name, CurrencyName currency, Integer id);
 	List<AccountView> findByPersonIdAndActiveTrue(Integer id);
+	boolean existsByPersonId(int id);
 }

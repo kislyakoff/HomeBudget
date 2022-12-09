@@ -56,6 +56,10 @@ public class AccountsService {
 	public boolean isEmpty(int id) {
 		return !transactionsRepository.existsByAcc1IdOrAcc2Id(id, id);
 	}
+	
+	public boolean isOwned(int id) {
+		return accountsRepository.existsByPersonId(id);
+	}
 
 	@Transactional
 	public void create(Account account, Person person) {
