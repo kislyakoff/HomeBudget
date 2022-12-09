@@ -12,9 +12,9 @@ import by.kislyakoff.HomeBudgetApp.model.dict.CurrencyName;
 @Repository
 public interface AccountsRepository extends JpaRepository<Account, Integer> {
 	
-	List<Account> findByPersonIdOrderByNameAsc(Integer id);
-	List<Account> findByPersonIdAndActiveTrueOrderByNameAsc(Integer id);
-	boolean existsByNameAndCurrencyCodeAndPersonId(String name, CurrencyName currency, Integer id);
-	List<AccountView> findByPersonIdAndActiveTrue(Integer id);
+	List<Account> findByPersonIdOrderByNameAsc(int id);
+	List<Account> findByPersonIdAndActiveTrueOrderByNameAsc(int id);
+	boolean existsByNameAndCurrencyCodeAndPersonId(String name, CurrencyName currency, int id);
+	List<AccountView> findByPersonIdAndActiveTrue(int id);
 	boolean existsByPersonId(int id);
 }
