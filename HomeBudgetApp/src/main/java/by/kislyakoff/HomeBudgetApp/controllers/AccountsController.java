@@ -139,6 +139,14 @@ public class AccountsController {
 		return accountsService.isOwned(id);
 	}
 	
+	@GetMapping("/check/active")
+	@ResponseBody
+	public boolean checkIsActive(String acc1Name, String acc2Name) {
+		
+		
+		return accountsService.isActive(acc1Name, acc2Name);
+	}
+	
 	@GetMapping("/list")
 	@ResponseBody
 	public List<AccountView> accountsListForTransaction(@AuthenticationPrincipal(expression = "id") Integer id) {
