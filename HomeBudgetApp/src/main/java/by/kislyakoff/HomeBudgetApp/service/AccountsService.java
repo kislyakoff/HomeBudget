@@ -101,5 +101,12 @@ public class AccountsService {
 		return accountsRepository.findById(id).orElse(null);
 	}
 	
+	public boolean isActive(String acc1Name, String acc2Name) {
+		if(!acc2Name.isEmpty()) {
+			return accountsRepository.existsByNameAndActiveTrue(acc2Name) && accountsRepository.existsByNameAndActiveTrue(acc1Name);
+		}
+		else
+			return accountsRepository.existsByNameAndActiveTrue(acc1Name);
+	}
 
 }
