@@ -365,6 +365,9 @@ table.table-1 > tbody > tr > td {
     font-weight: normal;
     vertical-align: top;
 }
+table.table-1 > tbody > tr > td:nth-child(4) {
+	max-width: 50px;
+}
 table.table-1 > tbody > tr > td > input[type="checkbox"] {
     cursor: pointer;
     margin-left: 0;
@@ -407,7 +410,7 @@ table.table-1 > tbody > tr > td > section.info > .info-row > .caption {
 table.table-1 > tbody > tr > td > section.info > .info-row > .data {
     font-weight: normal;
     max-width: fit-content;
-    margin-left: 5%;
+    margin-left: 10%;
 }
 
 table.table-2 {
@@ -443,9 +446,13 @@ table.table-2 > tbody > tr > td {
     font-weight: normal;
     vertical-align: top;
 }
+
+table.table-2 > tbody > tr > td:nth-child(2) {
+	max-width: 379px;
+}
+
 table.table-2 > tbody > tr > td:nth-child(3) {
 	text-align: end; 
-
 }
 table.table-2 > tbody > tr > td > input[type="checkbox"] {
     cursor: pointer;
