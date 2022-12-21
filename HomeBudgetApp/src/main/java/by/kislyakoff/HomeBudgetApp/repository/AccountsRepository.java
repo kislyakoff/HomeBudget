@@ -1,6 +1,7 @@
 package by.kislyakoff.HomeBudgetApp.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,5 @@ public interface AccountsRepository extends JpaRepository<Account, Integer> {
 	List<AccountView> findByPersonIdAndActiveTrue(int id);
 	boolean existsByPersonId(int id);
 	boolean existsByNameAndActiveTrue(String name);
+	Optional<Account> findByIdAndPersonId(int id, int ownerId);
 }
