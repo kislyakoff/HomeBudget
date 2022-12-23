@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,7 +51,7 @@ public class Transaction {
 	@Column(name = "comment")
 	private String comment;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id", referencedColumnName = "id")
 	private Category category;
 
@@ -125,5 +126,13 @@ public class Transaction {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+
+	@Override
+	public String toString() {
+		return "Transaction [id=" + id + ", type=" + type + ", date=" + date + ", acc1=" + acc1 + ", acc2=" + acc2
+				+ ", amount=" + amount + ", partner=" + partner + ", comment=" + comment + ", category=" + category
+				+ "]";
+	}
+	
 
 }
