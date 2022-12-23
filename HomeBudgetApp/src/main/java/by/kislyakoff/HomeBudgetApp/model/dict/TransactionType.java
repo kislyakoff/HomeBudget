@@ -2,7 +2,7 @@ package by.kislyakoff.HomeBudgetApp.model.dict;
 
 public enum TransactionType {
 
-	EXPENCE("E"), INCOM("I"), TRANSFER("T"), DEBT("D");
+	EXPENCE("E"), INCOME("I"), TRANSFER("T");
 	
 	private String type;
 
