@@ -1,11 +1,34 @@
 <th:block th:fragment="content">
-    <div class="form-horizontal welcome">
-        <div class="form-header" id="test-case">Добро пожаловать, [[${#httpServletRequest.remoteUser}]]!</div>
-        <div class="form-row info">
-            Вы успешно авторизовались в системе!
-        </div>
-        <div class="form-row buttons">
-        	<a href="/homebudget/transactions" class="btn btn-outline-success" role="button">К транзакциям</a>
-        </div>
-    </div>
+	<!-- 	<div class="form-horizontal welcome"> -->
+	<!-- 		<div class="form-header" id="test-case">Добро пожаловать, -->
+	<!-- 			[[${#httpServletRequest.remoteUser}]]!</div> -->
+	<!-- 		<div class="form-row info">Вы успешно авторизовались в системе! -->
+	<!-- 		</div> -->
+	<!-- 		<div class="form-row buttons"> -->
+	<!-- 			<a href="/homebudget/transactions" class="btn btn-outline-success" -->
+	<!-- 				role="button">К транзакциям</a> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+	<div class="welcome-block">
+		<div class="form-horizontal welcome">
+			<div class="form-header" id="test-case">Баланс</div>
+			<div class="form-row info">USD:
+			</div>
+
+		</div>
+
+		<div class="form-horizontal welcome">
+			<div class="form-header" id="test-case">Добро пожаловать,
+				[[${#httpServletRequest.remoteUser}]]!</div>
+			<div class="form-row info">Вы успешно авторизовались в системе!
+			</div>
+			<div class="form-row buttons">
+				<a href="/homebudget/transactions" class="btn btn-outline-success"
+					role="button">К транзакциям</a>
+			</div>
+		</div>
+
+
+	</div>
+
 </th:block>
