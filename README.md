@@ -1,5 +1,5 @@
 # HomeBudget
-Technologies : Spring boot 2.6.12, Java 11, Postgresql 10, Thymeleaf
+Technologies : Spring boot 2.6.12, Java 11, Postgresql 10, Thymeleaf, Liquibase
 
 Some screenshots:
 
