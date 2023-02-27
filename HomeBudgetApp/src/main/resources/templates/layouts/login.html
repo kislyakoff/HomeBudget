@@ -16,9 +16,10 @@
                                 <label for="username" class="form-label">Имя пользователя</label>
                                 <input type="text" class="form-control" name="username" id="username" autocomplete="off" />
                             </div>
-                            <div class="mb-2">
+                            <div class="mb-2" id="password-login">
                                 <label for="password" class="form-label">Пароль</label>
-                                <input type="password" class="form-control" name="password" id="password" />
+                                <input type="password" class="form-control" name="password" id="password" data-toggle="password" />
+                                <i class="far fa-eye" id="togglePassword"></i>
                             </div>
                             <div class="mb-4 form-check">
                                 <input type="checkbox" class="form-check-input" id="remember-me" />
@@ -52,6 +53,18 @@
             <script src="/webjars/jquery/jquery.min.js"></script>
             <script src="js/common.js"></script>
             <script>
+            
+	            const togglePassword = document.querySelector('#togglePassword');
+	    	    const password = document.querySelector('#password');
+	    	
+	    	    togglePassword.addEventListener('click', function (e) {
+	    	      // toggle the type attribute
+	    	      const type = password.type === 'password' ? 'text' : 'password';
+	    	      
+	    	      password.setAttribute('type', type);
+	    	      // toggle the eye slash icon
+	    	      this.classList.toggle('fa-eye-slash');
+	    	 	 });
 //                 function showAlert(message) {
 //                     $('.modal-background > .alert span').text(message);
 //                     $('.modal-background').css('display', 'flex');
