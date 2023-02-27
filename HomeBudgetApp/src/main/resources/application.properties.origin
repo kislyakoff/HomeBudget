@@ -1,5 +1,5 @@
 # Data source configuration
-# spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.driver-class-name=org.postgresql.Driver
 spring.datasource.url=jdbc:postgresql://#db url
 spring.datasource.username=
 spring.datasource.password=
