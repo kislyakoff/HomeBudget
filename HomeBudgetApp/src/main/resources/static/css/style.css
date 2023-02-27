@@ -149,6 +149,22 @@ button.btn {
     align-items: center;
     justify-content: center;
 }
+/* 	show-password login */
+#password-login {
+	position: relative;	
+}
+
+.mb-2 #togglePassword {
+	position: absolute;
+	cursor: pointer;
+	right: 2%;
+	top: 32.6px;
+	padding: 8px;
+}
+
+.mb-2 #togglePassword:hover {
+	background: #f2f2f2;
+}
 
 .ui-block {
     background-color: #f2f0e6;
@@ -608,12 +624,12 @@ ul.page-control > li.skip::after {
     box-sizing: border-box;
     border-radius: 8px;
 }
-.form-horizontal.welcome {
-    width: 600px;
-    min-height: 50px;
-    margin-left: auto;
-    margin-right: auto;
-}
+/* .form-horizontal.welcome { */
+/*     width: 200px; */
+/*     min-height: 50px; */
+/*     margin-left: auto; */
+/*     margin-right: auto; */
+/* } */
 .form-horizontal.edit-user {
     width: 600px;
     margin-left: auto;
@@ -692,7 +708,8 @@ ul.page-control > li.skip::after {
 #togglePassword {
 	position: absolute;
 	cursor: pointer;
-	right: 4.5%;
+	right: 3%;
+	padding: 8px;
 }
 
 .error-message {
@@ -765,6 +782,26 @@ nav.navbar {
     display: inline-block;
     font-size: 30px !important;
 }
+
+/*welcome-block*/
+.welcome-block
+{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.welcome-block > .form-horizontal.welcome
+{
+	float: right;
+	width: 50%;
+	margin-left: 5px;
+	margin-right: 5px;
+	min-height: 50px;
+}
+
+
+
 /* transaction modal*/
 .transaction-modal .nav {
     margin-bottom: 10px;
