@@ -18,7 +18,8 @@
 		</div>
 
 		<div class="form-horizontal welcome">
-			<div class="form-header" id="test-case">Добро пожаловать, [[${#httpServletRequest.remoteUser}]]!</div>
+<!-- 			<div class="form-header" id="test-case">Добро пожаловать, [[${#httpServletRequest.remoteUser}]]!</div> -->
+			<div class="form-header" id="test-case">Добро пожаловать, [[${#authentication.name}]]!</div>
 			<div class="form-row info">Вы успешно авторизовались в системе!
 			</div>
 			<div class="form-row buttons">
