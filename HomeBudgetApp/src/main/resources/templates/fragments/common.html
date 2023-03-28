@@ -129,7 +129,12 @@
         <div class="fas fa-user-circle">
             <div class="menu">
                 <div class="items">
-                    <a href="javascript:void(0)" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Выход</a>
+               	   <a href="javascript: document.logoutForm.submit()"> 
+               	   					<i class="fas fa-sign-out-alt"></i> Выход</a>
+
+				   <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+				      <input type="submit" value=""/>
+				   </form> 
                     <a href="javascript:void(0)" onclick="edit()"><i class="fas fa-edit"></i> Изменить</a>
                 </div>
             </div>
@@ -137,20 +142,7 @@
     </div>
     <script>
     
-        function logout() {
-            preloader(true);
-            $.ajax({
-                url: '/logout',
-                type: 'POST',
-                success: () => {
-                    document.location.href = '/logout';
-                },
-                error: () => {
-                    preloader(false);
-                    window.alert('Не удалось выполнить выход из системы!');
-                }
-            });
-        }
+        
 //         TODO: implement edit user GET request
         function edit() {
         	preloader(true);
