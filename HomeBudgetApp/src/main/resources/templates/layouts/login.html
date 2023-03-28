@@ -14,7 +14,7 @@
                         <form name="f" method="post" action="/process_login">
                             <div class="mb-2">
                                 <label for="username" class="form-label">Имя пользователя</label>
-                                <input type="text" class="form-control" name="username" id="username" autocomplete="off" />
+                                <input type="text" class="form-control" name="username" id="username" autocomplete="off" th:autofocus="autofocus"/>
                             </div>
                             <div class="mb-2" id="password-login">
                                 <label for="password" class="form-label">Пароль</label>
@@ -57,7 +57,7 @@
 	            const togglePassword = document.querySelector('#togglePassword');
 	    	    const password = document.querySelector('#password');
 	    	
-	    	    togglePassword.addEventListener('click', function (e) {
+	    	    togglePassword.addEventListener('click', function () {
 	    	      // toggle the type attribute
 	    	      const type = password.type === 'password' ? 'text' : 'password';
 	    	      
