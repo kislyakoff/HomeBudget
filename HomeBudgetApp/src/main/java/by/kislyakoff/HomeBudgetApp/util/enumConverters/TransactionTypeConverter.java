@@ -10,21 +10,21 @@ import by.kislyakoff.HomeBudgetApp.model.dict.TransactionType;
 @Converter(autoApply = true)
 public class TransactionTypeConverter implements AttributeConverter<TransactionType, String> {
 
-	@Override
-	public String convertToDatabaseColumn(TransactionType type) {
-		if (type == null)
-			return null;
-		return type.getType();
-	}
+        @Override
+        public String convertToDatabaseColumn(TransactionType type) {
+                if (type == null)
+                        return null;
+                return type.getType();
+        }
 
-	@Override
-	public TransactionType convertToEntityAttribute(String dbData) {
-		if (dbData == null)
-			return null;
-		return Stream.of(TransactionType.values())
-				.filter(t -> t.getType().equals(dbData))
-				.findFirst()
-				.orElseThrow(IllegalArgumentException::new);
-	}
+        @Override
+        public TransactionType convertToEntityAttribute(String dbData) {
+                if (dbData == null)
+                        return null;
+                return Stream.of(TransactionType.values())
+                                .filter(t -> t.getType().equals(dbData))
+                                .findFirst()
+                                .orElseThrow(() -> new IllegalArgumentException("The " + dbData + " not supported."));
+        }
 
 }
