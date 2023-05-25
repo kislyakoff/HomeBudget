@@ -31,133 +31,123 @@ import by.kislyakoff.HomeBudgetApp.util.validators.AccountValidator;
 @Controller
 @RequestMapping("/homebudget/accounts")
 public class AccountsController {
-	
+
 	private final AccountsService accountsService;
 	private final ModelMapper modelMapper;
 	private final AccountValidator accountValidator;
-	
+
 	@Autowired
-	public AccountsController(AccountsService accountsService, ModelMapper modelMapper, AccountValidator accountValidator) {
+	public AccountsController(AccountsService accountsService, ModelMapper modelMapper,
+			AccountValidator accountValidator) {
 		this.accountsService = accountsService;
 		this.modelMapper = modelMapper;
 		this.accountValidator = accountValidator;
 	}
 
-
-
 	@GetMapping
 	public String accountsList(@AuthenticationPrincipal(expression = "person") Person person,
-			@RequestParam(name = "show", required = false) boolean showClosed , Model model) {
-		
+			@RequestParam(name = "show", required = false) boolean showClosed, Model model) {
+
 		model.addAttribute("show", showClosed);
-		model.addAttribute("accounts", showClosed ? accountsService.accountsList(person.getId())
-																		.stream()
-																		.map(this::convertToAccountDTO)
-																		.collect(Collectors.toList()) :
-													accountsService.accountsListActive(person.getId())
-																		.stream()
-																		.map(this::convertToAccountDTO)
-																		.collect(Collectors.toList()));
-	
-	
-	return "layouts/accounts";
+		model.addAttribute("accounts",
+				showClosed
+						? accountsService.accountsList(person.getId()).stream().map(this::convertToAccountDTO)
+								.collect(Collectors.toList())
+						: accountsService.accountsListActive(person.getId()).stream().map(this::convertToAccountDTO)
+								.collect(Collectors.toList()));
+
+		return "layouts/accounts";
 	}
-	
+
 	@PostMapping("/create")
 	@ResponseBody
 	public ResponseEntity<HttpStatus> create(@RequestBody AccountDTO accountDTO, BindingResult bindingResult,
-								@AuthenticationPrincipal(expression = "person") Person person) {
+			@AuthenticationPrincipal(expression = "person") Person person) {
 		Account account = convertToAccount(accountDTO);
-		
+
 		accountValidator.validate(account, bindingResult);
-		
+
 		if (bindingResult.hasErrors())
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		
+
 		accountsService.create(account, person);
-		
+
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
-	
+
 	@PatchMapping("edit/{id}")
 	@ResponseBody
-	public ResponseEntity<HttpStatus> edit(@PathVariable Integer id, @RequestBody AccountDTO accountDTO, 
+	public ResponseEntity<HttpStatus> edit(@PathVariable Integer id, @RequestBody AccountDTO accountDTO,
 			BindingResult bindingResult, @AuthenticationPrincipal(expression = "person") Person person) {
 		Account account = convertToAccount(accountDTO);
-		
+
 		accountValidator.validate(account, bindingResult);
-		
+
 		if (bindingResult.hasErrors())
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-				
-		accountsService.update(id, account, person);		
-		
+
+		accountsService.update(id, account, person);
+
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("/erase/{id}")
 	@ResponseBody
 	public ResponseEntity<HttpStatus> delete(@PathVariable Integer id) {
-		
+
 		accountsService.delete(id);
-		
+
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
-	
 
 	@PatchMapping("/{include}/{id}")
 	@ResponseBody
-	public ResponseEntity<HttpStatus> includeInTotal(@PathVariable Integer id,
-												@PathVariable String include) {
+	public ResponseEntity<HttpStatus> includeInTotal(@PathVariable Integer id, @PathVariable String include) {
 		Boolean toInclude = include.equals("include") ? true : false;
 		accountsService.include(toInclude, id);
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
-	
+
 	@PatchMapping("/to{open}/{id}")
 	@ResponseBody
-	public ResponseEntity<HttpStatus> activate(@PathVariable Integer id,
-												@PathVariable String open) {
+	public ResponseEntity<HttpStatus> activate(@PathVariable Integer id, @PathVariable String open) {
 		Boolean toOpen = open.equals("open") ? true : false;
 		accountsService.open(toOpen, id);
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/check/{id}")
 	@ResponseBody
 	public boolean checkIsEmpty(@PathVariable int id) {
-		
-		
+
 		return accountsService.isEmpty(id);
 	}
-	
+
 	@GetMapping("/check-owned/{id}")
 	@ResponseBody
 	public boolean checkIsOwned(@PathVariable int id) {
-		
-		
+
 		return accountsService.isOwned(id);
 	}
-	
+
 	@GetMapping("/check/active")
 	@ResponseBody
 	public boolean checkIsActive(String acc1Name, String acc2Name) {
-		
-		
+
 		return accountsService.isActive(acc1Name, acc2Name);
 	}
-	
+
 	@GetMapping("/list")
 	@ResponseBody
 	public List<AccountView> accountsListForTransaction(@AuthenticationPrincipal(expression = "id") Integer id) {
-		
+
 		return accountsService.accountsListActiveForTransaction(id);
 	}
-	
+
 	private Account convertToAccount(AccountDTO accountDTO) {
 		return modelMapper.map(accountDTO, Account.class);
 	}
-	
+
 	private AccountDTO convertToAccountDTO(Account account) {
 		return modelMapper.map(account, AccountDTO.class);
 	}
