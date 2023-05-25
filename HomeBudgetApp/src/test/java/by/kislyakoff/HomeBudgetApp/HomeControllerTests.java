@@ -24,29 +24,30 @@ import by.kislyakoff.HomeBudgetApp.controllers.HomeController;
 @Sql(value = {"/create_user_before.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/create_user_after.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 public class HomeControllerTests {
-	
-	@Autowired
-	private MockMvc mockMvc;
-	
-	@Autowired
-	private HomeController controller;
-	
-//	@Autowired
-//	private WebApplicationContext context;
-	
-//	@BeforeEach
-//	void setup() {
-//		MockitoAnnotations.openMocks(this);
-//	    this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
-//	    					.apply(springSecurity()).build();
-//	}
-	
-	@Test
-	void mainPageTest() throws Exception {
-		this.mockMvc.perform(get("/homebudget"))
-			.andDo(print())
-			.andExpect(authenticated())
-			.andExpect(xpath("//div[@id='test-case']").string("Добро пожаловать, test!"));
-	}
+
+        @Autowired
+        private MockMvc mockMvc;
+
+        @Autowired
+        private HomeController controller;
+
+//      @Autowired
+//      private WebApplicationContext context;
+
+//      @BeforeEach
+//      void setup() {
+//              MockitoAnnotations.openMocks(this);
+//          this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+//                                              .apply(springSecurity()).build();
+//      }
+
+        @Test
+        void mainPageTest() throws Exception {
+                this.mockMvc.perform(get("/homebudget"))
+                        .andDo(print())
+                        .andExpect(authenticated())
+                        .andExpect(xpath("//div[@id='balance']/span/b").string("test"))
+                        .andExpect(xpath("/html/body/section[1]/div/div[1]/span").string("Current user: test"));
+        }
 
 }
