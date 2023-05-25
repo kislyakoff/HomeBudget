@@ -1,34 +1,76 @@
 <th:block th:fragment="content">
-	<!-- 	<div class="form-horizontal welcome"> -->
-	<!-- 		<div class="form-header" id="test-case">Добро пожаловать, -->
-	<!-- 			[[${#httpServletRequest.remoteUser}]]!</div> -->
-	<!-- 		<div class="form-row info">Вы успешно авторизовались в системе! -->
-	<!-- 		</div> -->
-	<!-- 		<div class="form-row buttons"> -->
-	<!-- 			<a href="/homebudget/transactions" class="btn btn-outline-success" -->
-	<!-- 				role="button">К транзакциям</a> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-	<div class="welcome-block">
-		<div class="form-horizontal welcome">
-			<div class="form-header">Баланс</div>
-			<div class="form-row info">USD:
-			</div>
+        <!--    <div class="form-horizontal welcome"> -->
+        <!--            <div class="form-header" id="test-case">Добро пожаловать, -->
+        <!--                    [[${#httpServletRequest.remoteUser}]]!</div> -->
+        <!--            <div class="form-row info">Вы успешно авторизовались в системе! -->
+        <!--            </div> -->
+        <!--            <div class="form-row buttons"> -->
+        <!--                    <a href="/homebudget/transactions" class="btn btn-outline-success" -->
+        <!--                            role="button">К транзакциям</a> -->
+        <!--            </div> -->
+        <!--    </div> -->
+        <div class="welcome-block">
+                <div class="form-horizontal welcome">
+                        <div class="form-header" id="balance">
+                                <span>Добро пожаловать, <b>[[${#authentication.name}]]</b> !</span>
+                        </div>
+                        <div class="form-row info" id="curr">
+                        </div>
 
-		</div>
+                </div>
 
-		<div class="form-horizontal welcome">
-<!-- 			<div class="form-header" id="test-case">Добро пожаловать, [[${#httpServletRequest.remoteUser}]]!</div> -->
-			<div class="form-header" id="test-case">Добро пожаловать, [[${#authentication.name}]]!</div>
-			<div class="form-row info">Вы успешно авторизовались в системе!
-			</div>
-			<div class="form-row buttons">
-				<a href="/homebudget/transactions" class="btn btn-outline-success"
-					role="button">К транзакциям</a>
-			</div>
-		</div>
+                <!-- <div class="form-horizontal welcome">
+                        <div class="form-header" id="test-case">Добро пожаловать, [[${#httpServletRequest.remoteUser}]]!</div>
+                        <div class="form-header" id="test-case">Добро пожаловать, [[${#authentication.name}]]!</div>
+                        <div class="form-row info">Вы успешно авторизовались в системе!
+                        </div>
+                        <div class="form-row buttons">
+                                <a href="/homebudget/transactions" class="btn btn-outline-success"
+                                        role="button">К транзакциям</a>
+                        </div>
+                </div> -->
 
 
-	</div>
+        </div>
+
+        <script th:inline="javascript">
+
+         $(function () {
+                $('#balance span').append(' Ваш баланс на ' + dateNow + ' составляет:');
+                $.ajax({
+            url  : `/homebudget/balances`,
+            type : 'GET',
+            dataType: "json",
+            success: (data) => {
+                if(!isEmpty(data)) {
+                        $.each(data, function (key, value) {
+                                $('<p>' + value.balanceSum + ' : ' + value.currencyCode + '</p>').appendTo('#curr');
+                      });
+                }
+                else {
+                        $('<p>Не обнаружено активных счетов</p>').appendTo('#curr');
+                }
+
+            }
+        });
+                
+//              $.ajax({
+//                      url: "http://www.cbr.ru/DailyInfoWebServ/DailyInfo.asmx",
+//                      type: "POST",
+//                      dataType: "xml",
+//                      contentType: 'texta; charset=utf-8',
+//                      contentLength: length,
+//                      headers: { SOAPAction: "http://web.cbr.ru/GetCursOnDate" },
+//                      data: soapMessage,
+//                      success: (soapResponse) => {
+//                              console.log(soapResponse) },
+//                      error: (data) => {
+//                              console.log(data);
+//                      }
+//              });
+        });
+
+        </script>
+
 
 </th:block>
