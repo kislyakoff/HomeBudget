@@ -1,21 +1,34 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="content">
-<nav class="navbar navbar-light">
+
+<div class="input-group" id="acc-header">
+        <button type="button" class="btn btn-outline-success" id="acc-form" onclick="create()">
+                                                                <i class="fas fa-plus"></i>&nbsp;&nbsp;Добавить</button>
+    <form class="d-flex" id="show-form" action="/homebudget/accounts" method="get">
+      <div class="form-check" id="acc-check">
+
+                          <label class="form-check-label">Отображать закрытые</label>
+                          <input class="form-check-input-reverse" type="checkbox" th:checked="${show}"
+                                                                                        name="show" id="show-value"     th:onclick="showclosed()">
+                        </div>
+    </form>
+</div>
+<!-- <nav class="navbar navbar-light">
   <div class="container-fluid">
-  	<button type="button" class="btn btn-outline-success" onclick="create()">
-   								<i class="fas fa-plus"></i>&nbsp;&nbsp;Добавить</button>
+        <button type="button" class="btn btn-outline-success" id="acc-btn" onclick="create()">
+                                                                <i class="fas fa-plus"></i>&nbsp;&nbsp;Добавить</button>
     <form class="d-flex" id="show-form" action="/homebudget/accounts" method="get">
       <div class="form-check">
-			  
-			  <label class="form-check-label">Отображать закрытые</label>
-			  <input class="form-check-input-reverse" type="checkbox" th:checked="${show}" 
-			  								name="show" id="show-value"	th:onclick="showclosed()">
-			</div>
+
+                          <label class="form-check-label">Отображать закрытые</label>
+                          <input class="form-check-input-reverse" type="checkbox" th:checked="${show}"
+                                                                                        name="show" id="show-value"     th:onclick="showclosed()">
+                        </div>
     </form>
   </div>
-</nav>
+</nav> -->
 
-	 <table class="table-1">
+         <table class="table-1">
         <thead>
             <tr>
                 <th width="20%">Название</th>
@@ -27,13 +40,13 @@
             </tr>
         </thead>
         <tbody>
-        	<tr th:each="account: ${accounts}">
-        		<td th:text="${account.getName()}"></td>
-        		<td th:text="${account.getCurrencyCode()}"></td>
-        		<td th:text="${account.getBalance()}"></td>
-        		<td>
+                <tr th:each="account: ${accounts}">
+                        <td th:text="${account.getName()}"></td>
+                        <td th:text="${account.getCurrencyCode()}"></td>
+                        <td th:text="${account.getBalance()}"></td>
+                        <td>
                     <section class="info">
-                   		<div class="info-row">
+                                <div class="info-row">
                             <div class="caption">Статус</div>
                             <div class="data" th:text="${account.getActive()} ? 'Активный' : 'Закрыт'"></div>
                         </div>
@@ -41,20 +54,20 @@
                             <div class="caption">Описание</div>
                             <div class="data" th:text="${account.getDescription()}"></div>
                         </div>
-                        
+
                     </section>
                 </td>
-        		
-        		<td class="form-check form-switch">
-        			<input class="form-check-input" type="checkbox" th:checked="${account.getIncludeInTotal()}"
-        												 th:onclick="include([[${account.id}]], this)" />
-        		</td>
+
+                        <td class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" th:checked="${account.getIncludeInTotal()}"
+                                                                                                         th:onclick="include([[${account.id}]], this)" />
+                        </td>
                 <td>
                     <div class="action">
-                        <div class="action-btn" th:onclick="edit([[${account.id}]], [[${account.name}]], 
-                        			[[${account.description}]], [[${account.currencyCode}]], 
-                        			[[${account.includeInTotal}]], [[${account.active}]], 
-                        			[[${account.balance}]])">
+                        <div class="action-btn" th:onclick="edit([[${account.id}]], [[${account.name}]],
+                                                [[${account.description}]], [[${account.currencyCode}]],
+                                                [[${account.includeInTotal}]], [[${account.active}]],
+                                                [[${account.balance}]])">
                             <i class="fas fa-edit text-success" title="Редактировать"></i>
                         </div>
                         <div class="action-btn" th:onclick="trash([[${account.id}]], [[${account.active}]])">
@@ -66,11 +79,11 @@
                         </div>
                     </div>
                 </td>
-        	
-        	</tr>
+
+                </tr>
         </tbody>
      </table>
-     
+
       <section class="modal-background">
       <input type="hidden" id="account-id" value="" />
       <input type="hidden" id="account-active" value="" />
@@ -81,20 +94,20 @@
                 <input type="text" id="account-name" class="form-control" />
             </div>
             <div class="invalid-feedback inactive" id="account-name-miss">Пожалуйста, укажите название</div>
-            
+
             <div class="form-row">
                 <label for="currency-type" class="form-label required">Валюта</label>
                 <select id="currency-type" class="form-select">
                     <option>&mdash;&mdash;&mdash; выберите &mdash;&mdash;&mdash;</option>
-                    <option th:each="currency : ${T(by.kislyakoff.HomeBudgetApp.model.dict.CurrencyName).values()}" 
-      						  th:value="${currency}" th:text="${currency}"></option>
+                    <option th:each="currency : ${T(by.kislyakoff.HomeBudgetApp.model.dict.CurrencyName).values()}"
+                                                  th:value="${currency}" th:text="${currency}"></option>
                 </select>
             </div>
             <div class="invalid-feedback inactive" id="currency-type-miss">Пожалуйста, укажите валюту счета</div>
             <div class="form-row">
                 <label for="account-balance" class="form-label">Баланс</label>
                 <input type="number" id="account-balance" class="form-control" disabled/>
-            </div> 
+            </div>
             <div class="form-row">
                 <label for="account-description" class="form-label required">Описание</label>
                 <textarea id="account-description" class="form-control" placeholder=""></textarea>
@@ -110,9 +123,9 @@
             </div>
         </div>
     </section>
-     
+
       <script th:inline="javascript">
-      
+
    // включить/исключить счет из баланса
       function include(id, obj) {
           const active = $(obj).prop('checked');
@@ -130,11 +143,11 @@
               }
           });
       }
-   
-      // закрыть/открыть счет 
+
+      // закрыть/открыть счет
       function trash(id, active) {
-    	  if (active ? confirm('Вы действительно хотите закрыть счет?') :
-    		  			confirm('Сделать счет открытым?')) {
+          if (active ? confirm('Вы действительно хотите закрыть счет?') :
+                                        confirm('Сделать счет открытым?')) {
               preloader(true);
           $.ajax({
               url  : `accounts/to${active ? 'close' : 'open'}/${id}`,
@@ -148,14 +161,14 @@
                   window.alert('Не удалось изменить статус счета!');
               }
           });
-      	}
+        }
       }
-      
+
    // создание нового счета
       function create() {
-    	  $('#account-id').val('');
-    	  $('#account-active').val(true);
-    	  $('#account-balance').val("0.00");
+          $('#account-id').val('');
+          $('#account-active').val(true);
+          $('#account-balance').val("0.00");
           $('.modal-background .form-header').html('Новый счет');
           $('#currency-type').prop('selectedIndex', 0);
           $('label[for="currency-type"]').removeClass('is-invalid');
@@ -171,22 +184,22 @@
           $('#account-description-miss').addClass('inactive');
           $('#account-is-included').prop('checked', true);
           showAccountEdit();
-      }   
+      }
    // редактирование счета
       function edit(id, name, description, currencyCode, includeInTotal, active, balance) {
           $('#account-id').val(id);
           $('#account-active').val(active);
           $('#account-balance').val(balance);
-	          $.ajax({
-	              url  : `/homebudget/accounts/check/${id}`,
-	              type : 'GET',
-	              dataType: "json",
-	              success: (data) => {
-	            	  if (data === false)
-	            		  $('#currency-type').prop("disabled", true);
-	            	  // проверка счета на наличие транзакций и запрет редактирования валюты счета
-	              },
-	          });
+                  $.ajax({
+                      url  : `/homebudget/accounts/check/${id}`,
+                      type : 'GET',
+                      dataType: "json",
+                      success: (data) => {
+                          if (data === false)
+                                  $('#currency-type').prop("disabled", true);
+                          // проверка счета на наличие транзакций и запрет редактирования валюты счета
+                      },
+                  });
           $('.modal-background .form-header').html('Редактирование счета');
           $('#currency-type').val(currencyCode);
           $('label[for="currency-type"]').removeClass('is-invalid');
@@ -203,7 +216,7 @@
           $('#account-is-included').prop('checked', includeInTotal);
           showAccountEdit();
       }
-   
+
       function showAccountEdit() {
           $('.modal-background').css('display', 'flex');
       }
@@ -212,7 +225,7 @@
           $('.modal-background').css('display', 'none');
           $('#currency-type').prop("disabled", false);
       }
-      
+
       function prepareData() {
           var isValid = true;
           if ($('#currency-type option:selected').index() === 0) {
@@ -237,7 +250,7 @@
               $('#account-name').removeClass('is-invalid');
               $('#account-name-miss').addClass('inactive');
           }
-          
+
           var description = $('#account-description').val();
           if (isEmpty(description)) {
               $('label[for="account-description"]').addClass('is-invalid');
@@ -249,14 +262,14 @@
               $('#account-description').removeClass('is-invalid');
               $('#account-description-miss').addClass('inactive');
           }
-          
-          var includeInTotal = $('#account-is-included').prop('checked');
-          
 
-          return isValid ? {id: $('#account-id').val(), currencyCode: $('#currency-type').val(), active: $('#account-active').val(), 
-        	  					name, description, includeInTotal, balance: $('#account-balance').val()} : null;
+          var includeInTotal = $('#account-is-included').prop('checked');
+
+
+          return isValid ? {id: $('#account-id').val(), currencyCode: $('#currency-type').val(), active: $('#account-active').val(),
+                                                        name, description, includeInTotal, balance: $('#account-balance').val()} : null;
       }
-      
+
       // сохранение счета
       function save() {
           const data = prepareData();
@@ -281,22 +294,22 @@
                       });
           }
       }
-      
-      
-   
+
+
+
    // удаление счета
       function kill(id) {
-    	  $.ajax({
+          $.ajax({
               url  : `/homebudget/accounts/check/${id}`,
               type : 'GET',
               contentType: 'application/json',
               success: (data) => {
-            	  if (data === false) {
-            		// проверка счета на наличие транзакций и запрет удаление непустого счета
+                  if (data === false) {
+                        // проверка счета на наличие транзакций и запрет удаление непустого счета
                       window.alert('Нельзя удалить счет с транзакциями - можно только закрыть');
-            	  }
-            	  else if (data === true) {
-            		  if (confirm('Вы действительно хотите удалить данный счет?')) {
+                  }
+                  else if (data === true) {
+                          if (confirm('Вы действительно хотите удалить данный счет?')) {
                           preloader(true);
                           $.ajax({
                               url  : `/homebudget/accounts/erase/${id}`,
@@ -313,19 +326,19 @@
                               }
                           });
                       }
-            	  }
+                  }
               },
           });
       }
-   
+
    // отображать/не отображать закрытые заказы
       function showclosed() {
-    	  if ($('#show-value').prop('checked'))
-    	 		$('#show-form').submit();
-    	  else
-    		  document.location.href = '/homebudget/accounts';
+          if ($('#show-value').prop('checked'))
+                        $('#show-form').submit();
+          else
+                  document.location.href = '/homebudget/accounts';
       }
-   
+
     </script>
-     
+
 </th:block>
