@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import by.kislyakoff.HomeBudgetApp.dto.projections.AccountView;
+import by.kislyakoff.HomeBudgetApp.dto.projections.BalanceByCurrencyView;
 import by.kislyakoff.HomeBudgetApp.model.Account;
 import by.kislyakoff.HomeBudgetApp.model.Person;
 import by.kislyakoff.HomeBudgetApp.model.dict.CurrencyName;
@@ -107,6 +108,10 @@ public class AccountsService {
 		}
 		else
 			return accountsRepository.existsByNameAndActiveTrue(acc1Name);
+	}
+	
+	public List<BalanceByCurrencyView> getBalance(int ownerId) {
+		return accountsRepository.getBalanceByPersonId(ownerId);
 	}
 
 }
