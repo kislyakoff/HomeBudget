@@ -1,0 +1,768 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="content">
+ <form class="form-inline" id="seek-form" action="/homebudget/transactions/paginated" method="get">
+  <div class="input-group">
+  	<button type="button" class="btn btn-outline-success" onclick="create()">
+   								<i class="fas fa-plus"></i>&nbsp;&nbsp;Добавить</button>
+   	
+   		<input type="text" class="form-control" placeholder="Поиск по ... " name="seek" id="seek-value">
+   		<button type="button" class="btn btn-outline-success" onclick="search()">OK</button>
+	  	<button type="button" class="btn btn-outline-secondary" onclick="cancel()">Отмена</button>
+  </div>
+  <div class="filter" th:if="${seek != null}">
+        	Фильтр поиска:<b th:text="${seek}"></b><i class="fas fa-times text-danger" title="Сбросить" onclick="res()"></i>
+  </div>
+</form>
+	 <table class="table-2">
+        <thead>
+            <tr>
+                <th width="15%">Дата</th>
+                <th width="35%">Информация</th>
+                <th width="20%">Сумма</th>
+                <th width="20%">Счет</th>
+                <th width="10%">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<tr th:each="t: ${transactions}" th:with="amount=${t.getAmount()}, 
+					        					acc1name=${t.acc1.name},
+					        					acc2name=${t.acc2} ? ${t.acc2.name} : null,
+					        					acc2balance=${t.acc2} ? ${t.acc2.balance} : null, 
+        										catName=${t.category} ? ${t.category.name} : null,
+        										partnerName=${t.partner} ? ${t.partner.name} : null">
+        		<td> 
+        			<span th:text="${#temporals.format(t.date, 'dd-MMM-yyyy')}"></span>
+        			<p th:text="${#temporals.dayOfWeekName(t.date)}"></p>
+        		</td>
+        		<td> 
+        			<span th:switch="${t.getType().getType()}">
+        				<th:block th:case="T">Перевод</th:block>
+        				
+        			</span>
+        			 <span th:if="${t.getCategory()}" th:text="${catName}"></span>
+        			 <span th:if="${t.getPartner()}" th:text="${' - ' + partnerName}"></span>
+        			 <p th:text="${t.getComment()}"></p>
+        		</td>
+        		
+        		<td>
+        			<span th:switch="${t.getType().getType()}">
+        				<th:block th:case="I" th:text="'+ ' + ${#numbers.formatDecimal(amount, 1,'WHITESPACE', 2,'COMMA')} + ' ' + ${t.getAcc1().getCurrencyCode()}"></th:block>
+        				<th:block th:case="E" th:text="'- ' + ${#numbers.formatDecimal(amount, 1,'WHITESPACE', 2,'COMMA')} + ' ' + ${t.getAcc1().getCurrencyCode()}"></th:block>
+        				<th:block th:case="T" th:text="${#numbers.formatDecimal(amount, 1,'WHITESPACE', 2,'COMMA')} + ' ' + ${t.getAcc1().getCurrencyCode()}"></th:block>
+        			</span>
+        		</td>
+        		
+        				
+        		<td th:if="${t.getAcc2()}" th:utext="${acc1name + 
+        										' &#8594;&lt;br&gt;' + acc2name}"></td>
+        		<td th:unless="${t.getAcc2()}" th:text="${acc1name}"></td>
+
+                <td>
+                    <div class="action">
+                    	<div class="action-btn" th:onclick="edit([[${t.id}]], [[${t.type}]], 
+                    		[[${#temporals.format(t.date, 'dd-MM-yyyy')}]], [[${acc1name}]], [[${acc2name}]], 
+                    		[[${amount}]], [[${catName}]], [[${partnerName}]], [[${t.comment}]])">
+                            <i class="fas fa-edit text-success" title="Редактировать"></i>
+                        </div>
+                        <div class="action-btn" th:onclick="kill([[${t.id}]], [[${t.type}]], [[${amount}]], 
+                        	[[${t.acc1.balance}]], [[${acc2Balance}]], [[${acc1name}]], [[${acc2name}]])">
+                            <i class="fas fa-times text-danger" title="Удалить"></i>
+                        </div>
+                    </div>
+                </td>
+        	
+        	</tr>
+        </tbody>
+     </table>
+     
+     <th:block th:insert="fragments/common.html :: pagination"></th:block>
+     
+      <section class="modal-background transaction-modal">
+      <input type="hidden" id="transaction-id" value="" />
+        <div class="form-horizontal edit-contact">
+            <div class="form-header">Новая транзакция</div>
+            <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="expence-tab" data-bs-toggle="tab" data-bs-target="#expence" type="button" role="tab" aria-controls="expence" aria-selected="true">Расход</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="income-tab" data-bs-toggle="tab" data-bs-target="#income" type="button" role="tab" aria-controls="income" aria-selected="false">Приход</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="transfer-tab" data-bs-toggle="tab" data-bs-target="#transfer" type="button" role="tab" aria-controls="transfer" aria-selected="false">Перевод</button>
+                </li>
+              </ul>
+              <div class="form-row">
+                <label for="transaction-date" class="form-label required">Дата транзакции</label>
+                 <input id="datepicker" width="100%"/>
+             </div>
+             <div class="invalid-feedback inactive" id="transaction-date-miss">Пожалуйста, укажите дату транзакции</div>
+             <div class="form-row">
+                        <label for="transaction-amount" class="form-label required">Сумма</label>
+                        <input type="text" id="transaction-amount" class="form-control" data-old=""/>
+             </div>
+              <div class="invalid-feedback inactive" id="transaction-amount-miss">Пожалуйста, укажите сумму транзакции</div>
+              <div class="invalid-feedback inactive" id="transaction-amount-oversize">Недостаточно средств на счету</div>
+              	<div class="form-row">
+                        <label for="account-name" class="form-label required">Счет</label>
+                        <select id="account-name" class="form-select">
+                        	<option selected value="">&mdash;&mdash;&mdash; выберите &mdash;&mdash;&mdash;</option>
+                        </select>
+                 </div>
+                 <div class="invalid-feedback inactive" id="account-name-miss">Пожалуйста, укажите счет</div>
+                    
+                    
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="expence" role="tabpanel" aria-labelledby="expence-tab">
+                    <div class="form-row">
+                        <label for="transaction-category" class="form-label required">Категория</label>
+                        <select id="transaction-category" class="form-select">
+                        	<option selected value="">&mdash;&mdash;&mdash; выберите &mdash;&mdash;&mdash;</option>
+                        </select>
+	                 </div>
+	                 <div class="invalid-feedback inactive" id="transaction-category-miss">Пожалуйста, укажите категорию</div>
+                 </div>   
+                    
+                <div class="tab-pane fade" id="income" role="tabpanel" aria-labelledby="income-tab">
+                  	 <div class="form-row">
+                        <label for="transaction-category2" class="form-label required">Категория</label>
+                        <select id="transaction-category2" class="form-select">
+                        	<option selected value="">&mdash;&mdash;&mdash; выберите &mdash;&mdash;&mdash;</option>
+                        </select>
+	                 </div>
+	                 <div class="invalid-feedback inactive" id="transaction-category2-miss">Пожалуйста, укажите категорию</div>
+                </div>
+                <div class="tab-pane fade" id="transfer" role="tabpanel" aria-labelledby="transfer-tab">
+	                 <div class="form-row">
+	                        <label for="account2-name" class="form-label required">Счет2</label>
+	                        <select id="account2-name" class="form-select">
+	                        	<option selected value="">&mdash;&mdash;&mdash; выберите &mdash;&mdash;&mdash;</option>
+	                        </select>
+	                 </div>
+	                 <div class="invalid-feedback inactive" id="account2-name-miss">Пожалуйста, укажите счет</div>
+                </div>
+              
+            </div>
+            <div class="form-row d-none" id="show-partner">
+                        <label for="transaction-partner" class="form-label">Контрагент</label>
+                        <select id="transaction-partner" class="form-select">
+                        	<option selected value="">&mdash;&mdash;&mdash; выберите &mdash;&mdash;&mdash;</option>
+                        </select>
+	          </div>
+             <div class="form-row d-none" id="show-comment">
+                        <label for="transactions-comment" class="form-label">Комментарий</label>
+                        <textarea id="transactions-comment" class="form-control" placeholder=""></textarea>
+             </div>
+             <p class="comment-hyper" style="display: block;">
+                    	Добавить 
+                    	<a href="#" class="partnerLink" style="display: inline;">контрагента</a> 
+                    	<span class="orStr" style="display: inline;">или</span> 
+                    	<a href="#" class="commentLink" style="display: inline;">комментарий</a>
+               </p>
+            <div class="form-row buttons">
+                        <button type="button" class="btn btn-primary" onclick="save()">OK</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="hideTransactionEdit()">Отмена</button>
+             </div>
+        </div>
+    </section>
+     
+      <script th:inline="javascript">
+      
+   // создание новой транзакции
+      function create() {
+    	  $('#transaction-id').val('');
+          $('.modal-background .form-header').html('Новая транзакция');
+          // rest запрос на список активных счетов и добавление в селектор
+          getAccountsAndFill();
+          // добавление категорий в селектор
+          getCategoriesAndFill();
+          $('#myTab li:first-child button').tab('show');
+          showTransactionEdit();
+      }   
+   
+    // подстановка баланса и валюты в зависимости от выбранного счета  
+   	  $("#account-name").on('change', function(){
+   		$("#account2-name option").siblings().hide();
+   		$("#account2-name").val('');
+   		$('#account2-balance').html(' - ');
+   		var balance = $(this).find(':selected').data('balance');
+   		var cur = $(this).find(':selected').data('currency');
+   		if (jQuery.type(balance) != "undefined" && jQuery.type(cur) != "undefined"){
+   			$('label[for="transaction-amount"]').html('Сумма , ' + cur);
+   			$('label[for="account-name"]').html('Счет (' + balance + ' ' + cur + ')');
+   		}
+   		else{
+   			$('label[for="transaction-amount"]').html('Сумма');
+   			$('label[for="account-name"]').html('Счет');
+   			$('label[for="account2-name"]').html('Счет');
+   		}
+   		//заполнение select второго счета в зависимости от выбранного первого и его валюты
+   		$("#account2-name option" ).each(function() {
+   		    if($(this).attr('value')==$("#account-name  option:selected").attr('value') ||
+   		    		$(this).data('currency')!=$("#account-name  option:selected").data('currency')){
+   		        $(this).hide();
+   		    }
+   		    else {
+   		    	$(this).show();
+   		    }
+   		});
+   		$("#account2-name option[value='']").show();
+   		$('label[for="account2-name"]').html('Счет');
+   	  });
+   	 // подстановка баланса и валюты в зависимости от выбранного счета2
+   	 $("#account2-name").on('change', function(){
+   		var balance = $(this).find(':selected').data('balance');
+   		var cur = $(this).find(':selected').data('currency');
+   		if (jQuery.type(balance) != "undefined" && jQuery.type(cur) != "undefined"){
+   			$('label[for="account2-name"]').html('Счет (' + balance + ' ' + cur + ')');
+   		}
+   		else{
+   			$('label[for="account2-name"]').html('Счет');
+   		}
+   	});
+   	 // показываем список контрагентов для выбора
+   	 $('.partnerLink').click(function(){
+   		$('#show-partner').removeClass('d-none');
+   		$('.partnerLink').css('display', 'none');
+   		$('.orStr').css('display', 'none');
+   		getPartnersAndFill();
+	    if($('.commentLink').is(':hidden') && $('.partnerLink').is(':hidden')){
+   			$('.comment-hyper').css('display', 'none');
+   		}
+   	 });
+  // rest запрос на получение списка активных счетов и заполнение селекта
+   	 function getAccountsAndFill(acc1Name, acc2Name){
+   		 var len = $('#account-name option').length;
+		 if(len === 1){
+		    $.ajax({
+		        url  : `/homebudget/accounts/list`,
+		        type : 'GET',
+		        dataType: "json",
+		        success: (data) => {
+		            $.each(data, function (key, value) {
+		                $('<option/>', {
+		                    'value': value.id,
+		                    'text': value.name,
+		                    'data-balance': value.balance,
+		                    'data-currency': value.currencyCode
+		                }).appendTo("#account-name, #account2-name");
+		            });
+		            $("#account2-name option" ).siblings().hide();
+		            $("#account2-name option[value='']").show();
+		            //выбор текущего счета транзакции при редактировании
+		            if(acc1Name){
+		            	$("select#account-name option").each(function() { 
+	   				   		this.selected = (this.text == acc1Name); }).change();
+		            }
+		            if(acc2Name){
+		            	$("select#account2-name option").each(function() { 
+	   				   		this.selected = (this.text == acc2Name); }).change();
+		            }
+		            
+		        }
+		    });
+		 } 
+		 $('label[for="account-name"]').removeClass('is-invalid');
+		 $('#account-name').removeClass('is-invalid');
+		 $('#account-name-miss').addClass('inactive'); 
+   	 }
+  // rest запрос на получение списка категорий и заполнение селекта
+   	 function getCategoriesAndFill(catName){
+   		var cat = $('#transaction-category option').length;
+        if(cat === 1){
+      	  $.ajax({
+                url  : `/homebudget/categories/list`,
+                type : 'GET',
+                dataType: "json",
+                success: (data) => {
+              	  $.each(data, function (key, value) {
+	                     if(key === 'I'){
+	                    	 $.each(value, function (a, valA){
+	                    		 $('<option/>', {
+	   	                          'value': valA.id,
+	   	                          'text': valA.name,
+	   	                      	 }).appendTo('#transaction-category2');
+	                    	 });
+	                     }
+	                     else if(key === 'E'){
+							 $.each(value, function (b, valB){
+								 $('<option/>', {
+		   	                          'value': valB.id,
+		   	                          'text': valB.name,
+		   	                      }).appendTo('#transaction-category');
+	                    	 });
+	                     }
+	                  });
+              	 if(catName){
+	            	$("select#transaction-category option, select#transaction-category2 option")
+	            		.each(function() { 
+   				   			this.selected = (this.text == catName); }).change();
+	             }
+                }
+            });
+        }
+  }
+   	// rest запрос на получение списка партнеров и заполнение селекта
+   	 function getPartnersAndFill(partnerName){
+   		var par = $('#transaction-partner option').length;
+	    if(par < 2){
+         $.ajax({
+             url  : `/homebudget/partners/list`,
+             type : 'GET',
+             dataType: "json",
+             success: (data) => {
+                 $.each(data, function (key, value) {
+                     $('<option/>', {
+                         'value': value.id,
+                         'text': value.name,
+                     }).appendTo('#transaction-partner');
+                 });
+                 if(partnerName){
+		            	$("select#transaction-partner option").each(function() { 
+	   				   		this.selected = (this.text == partnerName); }).change();
+		            	$('.partnerLink').trigger('click');
+		            }
+             }
+         });
+	    }
+   	 }
+   	 // показываем поле для комментария
+   	$('.commentLink').click(function(){
+   		$('#show-comment').removeClass('d-none');
+   		$('.commentLink').css('display', 'none');
+   		$('.orStr').css('display', 'none');
+   		if($('.commentLink').is(':hidden') && $('.partnerLink').is(':hidden')){
+   			$('.comment-hyper').css('display', 'none');
+   		}
+   	 });
+   	 
+   	//изменение вида ввода транзакции при переходе на вкладку расход
+   	$('#expence-tab').click(function(){
+   		if($('#transactions-comment').val() === ''){
+   			$('#show-comment').addClass('d-none');
+   			$('.comment-hyper').css('display', 'block');
+   			$('.commentLink').css('display', 'inline');
+   			if($('.partnerLink').is(':visible')){
+   				$('.orStr').css('display', 'inline');
+   			}
+   		}
+   		if($('#transaction-partner').val() === ''){
+   			$('#show-partner').addClass('d-none');
+   			$('.partnerLink').css('display', 'inline');
+   			$('.comment-hyper').css('display', 'block');
+   			if($('.commentLink').is(':visible')){
+   				$('.orStr').css('display', 'inline');
+   			}
+   		}
+   		else if($('#show-partner').is(':hidden')){
+   			$('#show-partner').removeClass('d-none');
+   		}
+   	 });
+  //изменение вида ввода транзакции при переходе на вкладку приход
+   	$('#income-tab').click(function(){
+   		if($('#transactions-comment').val() === ''){
+   			$('#show-comment').addClass('d-none');
+   			$('.comment-hyper').css('display', 'block');
+   			$('.commentLink').css('display', 'inline');
+   			if($('.partnerLink').is(':visible')){
+   				$('.orStr').css('display', 'inline');
+   			}
+   		}
+   		if($('#transaction-partner').val() === ''){
+   			$('#show-partner').addClass('d-none');
+   			$('.partnerLink').css('display', 'inline');
+   			$('.comment-hyper').css('display', 'block');
+   			if($('.commentLink').is(':visible')){
+   				$('.orStr').css('display', 'inline');
+   			}
+   		}
+   		else if($('#show-partner').is(':hidden')){
+   			$('#show-partner').removeClass('d-none');
+   		}
+   	 });
+  //изменение вида ввода транзакции при переходе на вкладку перевод
+   	$('#transfer-tab').click(function(){
+   		if($('#transactions-comment').val() === ''){
+   			$('#show-comment').addClass('d-none');
+   			$('.comment-hyper').css('display', 'block');
+   			$('.orStr').css('display', 'none');
+   			$('.commentLink').css('display', 'inline');
+   		}
+   		else{
+   			$('.comment-hyper').css('display', 'none');
+   		}
+   		$('#show-partner').addClass('d-none');
+   		$('.partnerLink').css('display', 'none');
+   	 });
+   	
+   	
+   //скрипт автоформата ввода суммы
+   	anElement = new AutoNumeric('#transaction-amount', {digitGroupSeparator: ' ', decimalCharacter: ',', minimumValue: "0", watchExternalChanges: true});
+   
+   	// редактирование транзакции
+      function edit(id, type, date, acc1Name, acc2Name, amount, catName, partnerName, comment) {
+   		$.ajax({
+   			   url  : `/homebudget/accounts/check/active`,
+    		   type : 'GET',
+    		   data : {acc1Name, acc2Name},
+    	   	   contentType: 'application/json',
+    		   success: (data) => {
+    			// проверка закрыты счета транзакции или нет. если закрыты запрет редактирования
+    			   if(data === false){
+    				   window.alert('Нельзя редактировать транзакцию с неактивным счетом');
+    			   }
+    			   else {
+    				   
+	   				   $('#transaction-id').val(id);
+	  			       $('.modal-background .form-header').html('Редактирование транзакции');
+	   			       $('#datepicker').val(date);
+	   			       $('#transaction-amount').val(amount);
+	   			       $('#transaction-amount').attr('data-old', amount);
+	   			       getAccountsAndFill(acc1Name, acc2Name);
+	   			   	   $("select#account-name option").each(function() { 
+   				   				this.selected = (this.text == acc1Name); }).change();
+		   			   $('#account-name').prop('disabled', true);
+		   			   if(catName){
+		   				getCategoriesAndFill(catName);
+		   				$("select#transaction-category option, select#transaction-category2 option")
+	            			.each(function() { 
+   				   				this.selected = (this.text == catName); }).change();
+		   			   }
+		   			   if(partnerName){
+		   				getPartnersAndFill(partnerName);
+		   				$("select#transaction-partner option").each(function() { 
+	   				   		this.selected = (this.text == partnerName); }).change();
+		   				$('.partnerLink').trigger('click');
+		   			   }
+		   			   
+		   			   if(comment){
+		   				$('#transactions-comment').val(comment);
+		   				$('.commentLink').trigger('click');
+		   			   }
+		   			   
+	   			       switch(type) {
+	   			       
+	   			       case "EXPENCE":
+	   			       	  $('#expence-tab').trigger('click');
+	   			       	  $('#income-tab').addClass('disabled');
+	   			       	  $('#transfer-tab').addClass('disabled');
+	   			       	  break;
+	   			       case "INCOME":
+	   			    	  $('#income-tab').trigger('click');
+	   			       	  $('#expence-tab').addClass('disabled');
+	   			       	  $('#transfer-tab').addClass('disabled');
+	   			       	  break;
+	   			       case "TRANSFER":
+	   			    	  $('#transfer-tab').trigger('click');
+	   			    	  $('#income-tab').addClass('disabled');
+	   			    	  $('#expence-tab').addClass('disabled');
+	   			  		  $("select#account2-name option").each(function() { 
+				   				this.selected = (this.text == acc2Name); }).change();
+	   			  	      $('#account2-name').prop('disabled', true);
+	   			    	  break;
+	   			        }
+    			          
+    			        showTransactionEdit();
+    			   }
+    			   
+    		   },
+    		   error: () => {
+      	        	window.alert('Некорректные данные!');
+      	       } 
+   		});
+   		
+          
+      }
+   
+      function showTransactionEdit() {
+          $('.modal-background').css('display', 'flex');
+      }
+      
+
+      function hideTransactionEdit() {
+          $('.modal-background').css('display', 'none');
+          $('#datepicker').datepicker().value('');
+          $('#transaction-amount').val('');
+          $('#transaction-amount').attr('data-old', '');
+          $('label[for="transaction-amount"]').html('Сумма');
+          $('#account-name').val('');
+          $('#account2-name').val('');
+          $('label[for="account-name"]').html('Счет');
+ 		  $('label[for="account2-name"]').html('Счет');
+          $('#transaction-category').val('');
+          $('#transaction-category2').val('');
+          $('#transaction-partner').val('');
+          $('#transactions-comment').val('');
+          $('#show-partner').addClass('d-none');
+          $('#show-comment').addClass('d-none');
+          $('.comment-hyper').css('display', 'block');
+          $('.partnerLink').css('display', 'inline');
+          $('.orStr').css('display', 'inline');
+          $('.commentLink').css('display', 'inline');
+          $('#expence-tab').removeClass('disabled');
+    	  $('#income-tab').removeClass('disabled');
+    	  $('#transfer-tab').removeClass('disabled');
+    	  $('#account-name').prop('disabled', false);
+    	  $('#account2-name').prop('disabled', false);
+      }
+      
+      //test func
+      $('#myTab button').click(function(){
+//     	  $('label[for="transaction-date"]').addClass('is-invalid');
+//           $('#transaction-date-miss').removeClass('inactive');
+//           alert("Date is: " + $('#datepicker').val());
+   	 });
+      
+      function prepareData() {
+          var isValid = true;
+          var date = $('#datepicker').val();
+          if (isEmpty(date)) {
+              $('label[for="transaction-date"]').addClass('is-invalid');
+              $('#transaction-date-miss').removeClass('inactive');
+              isValid = false;
+          } else {
+              $('label[for="transaction-date"]').removeClass('is-invalid');
+              $('#transaction-date-miss').addClass('inactive');
+          }
+          
+          var amount = anElement.getNumericString();
+          if (isEmpty(amount)) {
+              $('label[for="transaction-amount"]').addClass('is-invalid');
+              $('#transaction-amount').addClass('is-invalid');
+              $('#transaction-amount-miss').removeClass('inactive');
+              isValid = false;
+          } else {
+              $('label[for="transaction-amount"]').removeClass('is-invalid');
+              $('#transaction-amount').removeClass('is-invalid');
+              $('#transaction-amount-miss').addClass('inactive');
+          }
+          
+          if ($('#account-name option:selected').index() === 0) {
+              $('label[for="account-name"]').addClass('is-invalid');
+              $('#account-name').addClass('is-invalid');
+              $('#account-name-miss').removeClass('inactive');
+              isValid = false;
+          } else {
+              $('label[for="account-name"]').removeClass('is-invalid');
+              $('#account-name').removeClass('is-invalid');
+              $('#account-name-miss').addClass('inactive');
+          }
+          if($('#myTab button[aria-selected="true"]').attr('aria-controls') !== 'income' &&
+        		$('#account-name option:selected').attr('data-balance') - $('#transaction-amount').val() < 0) {
+              $('#transaction-amount-oversize').removeClass('inactive');
+              isValid = false;
+          }
+          else{
+        	  $('#transaction-amount-oversize').addClass('inactive');
+          }
+          
+          switch($('#myTab button[aria-selected="true"]').attr('aria-controls')) {
+          case "expence":
+        	  var type = "EXPENCE"
+        	  if ($('#transaction-category option:selected').index() === 0) {
+                  $('label[for="transaction-category"]').addClass('is-invalid');
+                  $('#transaction-category').addClass('is-invalid');
+                  $('#transaction-category-miss').removeClass('inactive');
+                  isValid = false;
+              } else {
+                  $('label[for="transaction-category"]').removeClass('is-invalid');
+                  $('#transaction-category').removeClass('is-invalid');
+                  $('#transaction-category-miss').addClass('inactive');
+                  var categoryId =  $('#transaction-category').val();
+              }
+           break;
+          case "income":
+        	  var type = "INCOME"
+        	  if ($('#transaction-category2 option:selected').index() === 0) {
+                  $('label[for="transaction-category2"]').addClass('is-invalid');
+                  $('#transaction-category2').addClass('is-invalid');
+                  $('#transaction-category2-miss').removeClass('inactive');
+                  isValid = false;
+              } else {
+                  $('label[for="transaction-category2"]').removeClass('is-invalid');
+                  $('#transaction-category2').removeClass('is-invalid');
+                  $('#transaction-category2-miss').addClass('inactive');
+                  var categoryId =  $('#transaction-category2').val();
+              }
+        	  break;
+          default:
+        	  var type = "TRANSFER"
+        	  if ($('#account2-name option:selected').index() === 0) {
+                  $('label[for="account2-name"]').addClass('is-invalid');
+                  $('#account2-name').addClass('is-invalid');
+                  $('#account2-name-miss').removeClass('inactive');
+                  isValid = false;
+              } else {
+                  $('label[for="account2-name"]').removeClass('is-invalid');
+                  $('#account2-name').removeClass('is-invalid');
+                  $('#account2-name-miss').addClass('inactive');
+              }
+          }           
+
+          return isValid ? {id: $('#transaction-id').val(), type, date, acc1Id: $('#account-name').val(), 
+        	  	acc2Id: $('#account2-name').val(), amount, partnerId: $('#transaction-partner').val(),
+        	  	comment: $('#transactions-comment').val(), categoryId} : null;
+      }
+      
+      function getBalances(){
+    	  return {bal1: $("#account-name  option:selected").data('balance'), 
+    		  		bal2: $("#account2-name  option:selected").data('balance'), amountOld: $('#transaction-amount').data('old')};
+      }
+      
+      // сохранение транзакции
+      function save() {
+          const data = prepareData();
+          if (data !== null) {
+              preloader(true);
+              var isNegative = false;
+              const tansactionId = $('#transaction-id').val();
+              const balances = getBalances();
+              if(tansactionId){
+            	  switch(data.type){
+	   			   case 'TRANSFER':
+	   				   isNegative = (balances.bal1 + balances.amountOld - Number(data.amount)) < 0 || 
+	   				   					(balances.bal2 - balances.amountOld + Number(data.amount)) < 0 ? true : false;
+	   				   break;
+	   			   case 'INCOME':
+	   				   isNegative = (balances.bal1 - balances.amountOld + Number(data.amount)) < 0 ? true : false;
+	   				   break;
+	   			   case 'EXPENCE':
+	   				   isNegative = (balances.bal1 + balances.amountOld - Number(data.amount)) < 0 ? true : false;
+	   				   break;
+	   			   } 
+              }
+              else{
+            	  switch(data.type){
+	   			   case 'TRANSFER':
+	   				   isNegative = (balances.bal1 - Number(data.amount)) < 0 ? true : false;
+	   				   break;
+	   			   case 'EXPENCE':
+	   				   isNegative = (balances.bal1 - Number(data.amount)) < 0 ? true : false;
+	   				   break;
+	   			   } 
+              }
+              if(isNegative){
+  				   window.alert('При сохранении транзакции на одном из счетов появится отрицательный баланс');
+  			   }
+              if (confirm('Вы действительно хотите сохранить транзакцию?')) {
+            	  const [url, type] = !tansactionId
+                  ? [`/homebudget/transactions/create`, 'POST'] // новая транзакция
+                  : [`/homebudget/transactions/edit/${tansactionId}`, 'PATCH'] // ранее созданная транзакция
+	              $.ajax({
+	                  url,
+	                  type,
+	                  data: JSON.stringify(data),
+	                  contentType: 'application/json',
+	                  success: () => {
+	                	  preloader(false);
+	                      window.location.reload();
+	                  },
+	                  error: () => {
+	                      preloader(false);
+	                      window.alert('Не удалось сохранить транзакцию');
+	                  }
+	              });
+              }
+              preloader(false);
+          }
+      }
+      
+      
+   // удаление транзакции
+      function kill(id, type, amount, balance, balance2, acc1Name, acc2Name) {
+    	  $.ajax({
+   		   url  : `/homebudget/accounts/check/active`,
+   		   type : 'GET',
+   		   data : {acc1Name, acc2Name},
+   	   	   contentType: 'application/json',
+   		   	success: (data) => {
+   		   		// проверка закрыты счета удаляемой транзакции или нет. если закрыты запрет удаления
+   		   		if(data === true){
+		   		   	   var isNegative = false;
+		   			   switch(type){
+		   			   case 'TRANSFER':
+		   				   isNegative = (balance2 - amount) < 0 ? true : false;
+		   				   break;
+		   			   case 'INCOME':
+		   				   isNegative = (balance - amount) < 0 ? true : false;
+		   				   break;
+		   			   }
+		   			   if(isNegative){
+		   				   window.alert('При удалении транзакции на одном из счетов появится отрицательный баланс');
+		   			   }
+		   			   if (confirm('Вы действительно хотите удалить данную транзакцию?')) {
+		   		           preloader(true);
+		   		           $.ajax({
+		   		               url  : `/homebudget/transactions/erase/${id}`,
+		   		               type : 'DELETE',
+		   		               data : '{}',
+		   		               contentType: 'application/json',
+		   		               success: (data) => {
+		   		                   preloader(false);
+		   		                   if(data === true){
+		   		                	   window.location.reload();
+		   		                   }
+		   		                   else{
+		   		                	   window.alert('Некорректные данные для удаления транзакции!');  
+		   		                   }
+		   		                   
+		   		               },
+		   		               error: () => {
+		   		                   preloader(false);
+		   		                   window.alert('Не удалось удалить транзакцию!');
+		   		               }
+		   		           });
+		   		       }
+                   }
+                   else{
+                	 window.alert('Нельзя удалить транзакцию с неактивным счетом');  
+                   }
+   	        },
+   	        error: () => {
+   	        	window.alert('Некорректные данные!');
+   	        }
+   	   });
+	   
+      }
+   
+   
+   // datepicker
+      var today;
+      today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+      $('#datepicker').datepicker({
+      	locale: 'ru-ru',
+      	format: 'dd-mm-yyyy',
+      	weekStartDay: 1,
+      	maxDate: today
+      });
+      
+   // перейти на страницу с заданным номером
+      function go(page) {
+          if (page && page >= 1) {
+              document.location.href = page > 1 ? `/homebudget/transactions/paginated/${page}` : '/homebudget/transactions/paginated';
+          }
+      }
+   
+      function search() {
+          const s = $('#seek-value').val();
+          if (s && !/^\s+$/.test(s)) {
+              $('#seek-form').submit();
+          }
+      }
+      
+      function res() {
+    	  const s = /*[[${seek}]]*/ '';
+          if (s) {
+        	  document.location.href = '/homebudget/transactions/paginated';
+          }
+      }
+      
+
+      function cancel() {
+          $('#seek-value').val('');
+      }
+   
+   
+    </script>
+     
+</th:block>
