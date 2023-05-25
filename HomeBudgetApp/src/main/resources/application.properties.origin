@@ -15,6 +15,12 @@ spring.liquibase.enabled=false
 # enable hidden thymeleaf patch(put, delete) form methods
 spring.mvc.hiddenmethod.filter.enabled=true
 
+# URL for CBR Currency request
+cbr.url=https://cbr.ru/scripts/XML_daily.asp
+
+# Cache size for CBR Currency service
+app.cache.size=365
+
 # Server configuration
 # server.error.include-message=always
 
