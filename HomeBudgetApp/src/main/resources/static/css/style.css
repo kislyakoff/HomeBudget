@@ -57,7 +57,7 @@ button.btn {
 .layout-panel > .ui-block {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow-y: auto;
 }
 .layout-panel > .ui-block > .header {
     height: 70px;
@@ -322,11 +322,6 @@ button.btn {
 
 /*right menu*/
 .ui-block > .body > .row > .right-menu {
-/*     position: absolute; */
-/*     min-width: 200px; */
-/*     min-height: 20px; */
-/*     right: 15px; */
-/*     top: 60px; */
     background-color: #f2f29d;
     border-radius: 8px;
     border: 1px solid #999963;
@@ -388,15 +383,7 @@ button.btn {
 
 .ui-block > .body > .row > .content {
     position: relative;
-/*     left: 245px; */
-/*     right: 275px; */
-/*     top: 60px; */
-/*     bottom: 15px; */
-/*     overflow-y: auto; */
-/*     overflow-x:hidden; */
-    height: 800px;
-/*     padding: 0 15px 0 0; */
-/*     box-sizing: border-box; */
+    height: 400px;
 }
 
 .filter {
@@ -501,7 +488,7 @@ table.table-1 > tbody > tr > td > section.info > .info-row > .data {
 
 table.table-2 {
     border-bottom: 1px solid #808053;
-    min-width: 85%;
+    width: 100%;
 }
 
 table.table-2 > thead > tr > th {
