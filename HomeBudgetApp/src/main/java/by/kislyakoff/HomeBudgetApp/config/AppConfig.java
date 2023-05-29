@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import by.kislyakoff.HomeBudgetApp.model.CachedCbrCurrencyRates;
+import by.kislyakoff.HomeBudgetApp.model.CachedNbRbCurrencyRates;
 import by.kislyakoff.HomeBudgetApp.util.enumConverters.CurrencyNameConverter;
 import by.kislyakoff.HomeBudgetApp.util.enumConverters.TransactionTypeConverter;
 
@@ -35,6 +36,13 @@ public class AppConfig {
 	Cache<LocalDate, CachedCbrCurrencyRates> currencyRateCache(@Value("${app.cache.size}") int cacheSize) {
 		return cacheManager.createCache("CurrencyRate-Cache",
 				CacheConfigurationBuilder.newCacheConfigurationBuilder(LocalDate.class, CachedCbrCurrencyRates.class,
+						ResourcePoolsBuilder.heap(cacheSize)).build());
+	}
+	
+	@Bean
+	Cache<LocalDate, CachedNbRbCurrencyRates> nBcurrencyRateCache(@Value("${app.cache.size}") int cacheSize) {
+		return cacheManager.createCache("NbCurrencyRate-Cache",
+				CacheConfigurationBuilder.newCacheConfigurationBuilder(LocalDate.class, CachedNbRbCurrencyRates.class,
 						ResourcePoolsBuilder.heap(cacheSize)).build());
 	}
 	
