@@ -1,53 +1,70 @@
 <th:block th:fragment="default(route)">
-<!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+	<!DOCTYPE html>
+	<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-        <th:block th:insert="fragments/common.html :: meta"></th:block>
-        <th:block th:insert="fragments/common.html :: styles"></th:block>
-        <th:block th:insert="fragments/common.html :: start_scripts"></th:block>
-        <th:block th:insert="fragments/common.html :: title(${route})"></th:block>
+<th:block th:insert="fragments/common.html :: meta"></th:block>
+<th:block th:insert="fragments/common.html :: styles"></th:block>
+<th:block th:insert="fragments/common.html :: start_scripts"></th:block>
+<th:block th:insert="fragments/common.html :: title(${route})"></th:block>
 </head>
 <body>
 
-        <section class="layout-panel">
-        <div class="ui-block">
-                <div class="header">
-                    <i class="fas fa-key"></i>
-                    <span>Current user: [[${#httpServletRequest.remoteUser}]]</span>
-                    <th:block th:insert="fragments/common.html :: user-menu"></th:block>
-                </div>
-                <div class="body">
-                    <th:block th:insert="fragments/common.html :: breadcrumbs(${route})"></th:block>
+	<section class="layout-panel">
+
+		<div class="ui-block">
+			<div class="header">
+				<i class="fas fa-key"></i> <span>Current user:
+					[[${#httpServletRequest.remoteUser}]]</span>
+				<th:block th:insert="fragments/common.html :: user-menu"></th:block>
+			</div>
+			<div class="body container-fluid">
+				<th:block th:insert="fragments/common.html :: breadcrumbs(${route})"></th:block>
+
+					<div class="row">
+						<th:block th:insert="fragments/common.html :: menu(${route})"></th:block>
 
 
-                    <th:block th:insert="fragments/common.html :: menu(${route})"></th:block>
+						<div class="content col-8" id="content">
+							<th:block th:switch="${route}">
+								<th:block th:case="home" th:insert="pages/home.html :: content"></th:block>
+								<th:block th:case="users"
+									th:insert="pages/users.html :: content"></th:block>
+								<th:block th:case="partners"
+									th:insert="pages/partners.html :: content"></th:block>
+								<th:block th:case="categories"
+									th:insert="pages/categories.html :: content"></th:block>
+								<th:block th:case="accounts"
+									th:insert="pages/accounts.html :: content"></th:block>
+								<th:block th:case="transactions"
+									th:insert="pages/transactions.html :: content"></th:block>
+								<th:block th:case="create"
+									th:insert="pages/edit.html :: content(${route})"></th:block>
+								<th:block th:case="edit"
+									th:insert="pages/edit.html :: content(${route})"></th:block>
+								<th:block th:case="edit_partner"
+									th:insert="pages/edit_partner.html :: content(${route})"></th:block>
+								<th:block th:case="create_partner"
+									th:insert="pages/edit_partner.html :: content(${route})"></th:block>
+
+								<div th:case="*">Unknown!</div>
+							</th:block>
+
+						</div>
+						<th:block
+							th:insert="fragments/common.html :: right-panel(${route})"></th:block>
+					</div>
+
+				
+			</div>
+
+		</div>
 
 
-                    <div class="content" id="content">
-                        <th:block th:switch="${route}">
-                            <th:block th:case="home" th:insert="pages/home.html :: content"></th:block>
-                            <th:block th:case="users" th:insert="pages/users.html :: content"></th:block>
-                            <th:block th:case="partners" th:insert="pages/partners.html :: content"></th:block>
-                            <th:block th:case="categories" th:insert="pages/categories.html :: content"></th:block>
-                            <th:block th:case="accounts" th:insert="pages/accounts.html :: content"></th:block>
-                            <th:block th:case="transactions" th:insert="pages/transactions.html :: content"></th:block>
-                            <th:block th:case="create" th:insert="pages/edit.html :: content(${route})"></th:block>
-                            <th:block th:case="edit" th:insert="pages/edit.html :: content(${route})"></th:block>
-                            <th:block th:case="edit_partner" th:insert="pages/edit_partner.html :: content(${route})"></th:block>
-                            <th:block th:case="create_partner" th:insert="pages/edit_partner.html :: content(${route})"></th:block>
+	</section>
 
-                            <div th:case="*">Unknown!</div>
-                        </th:block>
-
-                    </div>
-                    <th:block th:insert="fragments/common.html :: right-panel(${route})"></th:block>
-                </div>
-            </div>
-        </section>
-
-        <th:block th:insert="fragments/common.html :: preloader"></th:block>
-        <th:block th:insert="fragments/common.html :: scripts_libs"></th:block>
-        <th:block th:insert="fragments/common.html :: scripts"></th:block>
+	<th:block th:insert="fragments/common.html :: preloader"></th:block>
+	<th:block th:insert="fragments/common.html :: scripts_libs"></th:block>
+	<th:block th:insert="fragments/common.html :: scripts"></th:block>
 </body>
-</html>
+	</html>
 </th:block>

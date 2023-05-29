@@ -80,7 +80,7 @@
 </th:block>
 
 <th:block th:fragment="menu(route)">
-    <div class="menu">
+    <div class="menu col-2 h-100">
         <th:block sec:authorize="hasAuthority('ADMIN')">
                 <em><i class="fas fa-users-cog"></i> Меню администратора</em>
                 <ul>
@@ -124,7 +124,7 @@
 </th:block>
 
 <th:block th:fragment="right-panel(route)">
-    <div class="right-menu">
+    <div class="right-menu col-2 h-100">
 
                         <em id="curr-rate"><i class="fas fa-chart-line"></i> Курс BYN НБРБ</em>
                         <table id="nb-rate"></table>
@@ -236,6 +236,7 @@
 <th:block th:fragment="scripts_libs">
         <script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/webjars/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+<!--     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script> -->
     <script src="/js/common.js"></script>
 </th:block>
 
@@ -247,6 +248,10 @@
                 const ps = new PerfectScrollbar(content);
             }
         });
+        
+        /* $('.row').masonry({
+        	  itemSelector : '.col'
+        	}); */
         
         $(getNbRates());
         $(getCbRates());

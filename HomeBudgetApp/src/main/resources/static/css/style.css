@@ -258,12 +258,8 @@ button.btn {
     margin: 0 5px 0 5px;
 }
 
-.ui-block > .body > .menu {
-    position: absolute;
-    min-width: 200px;
-    min-height: 20px;
-    left: 15px;
-    top: 60px;
+.ui-block > .body > .row > .menu {
+	display:inline-block;
     background-color: #f2f29d;
     border-radius: 8px;
     border: 1px solid #999963;
@@ -271,26 +267,26 @@ button.btn {
     box-sizing: border-box;
     color: #664c59;
 }
-.ui-block > .body > .menu > em {
+.ui-block > .body > .row > .menu > em {
     display: block;
     font-weight: 500;
     font-style: normal;
     font-size: 18px;
 }
-.ui-block > .body > .menu > ul {
+.ui-block > .body > .row > .menu > ul {
     list-style: none;
 }
-.ui-block > .body > .menu > ul > li {
+.ui-block > .body > .row > .menu > ul > li {
     margin-top: 5px;
 }
-.ui-block > .body > .menu > ul > li > a {
+.ui-block > .body > .row > .menu > ul > li > a {
     display: inline-block;
     position: relative;
     margin-left: -5px;
     text-decoration: none;
     border-bottom: 1px dashed #f2f29d;
 }
-.ui-block > .body > .menu > ul > li > a::before {
+.ui-block > .body > .row > .menu > ul > li > a::before {
     position: absolute;
     min-width: 10px;
     min-height: 10px;
@@ -301,36 +297,36 @@ button.btn {
     left: -22px;
     top: 3px;
 }
-.ui-block > .body > .menu > ul > li > a:link,
-.ui-block > .body > .menu > ul > li > a:visited {
+.ui-block > .body > .row > .menu > ul > li > a:link,
+.ui-block > .body > .row > .menu > ul > li > a:visited {
     color: #664c59;
 }
-.ui-block > .body > .menu > ul > li > a:hover,
-.ui-block > .body > .menu > ul > li > a:focus,
-.ui-block > .body > .menu > ul > li > a:active {
+.ui-block > .body > .row > .menu > ul > li > a:hover,
+.ui-block > .body > .row > .menu > ul > li > a:focus,
+.ui-block > .body > .row > .menu > ul > li > a:active {
     color: #0c92f2;
     border-color: #0c92f2;
 }
-.ui-block > .body > .menu > ul > li > a.active {
+.ui-block > .body > .row > .menu > ul > li > a.active {
     cursor: default;
     color: #f20c7f;
 }
-.ui-block > .body > .menu > ul > li > a.active:link,
-.ui-block > .body > .menu > ul > li > a.active:visited,
-.ui-block > .body > .menu > ul > li > a.active:hover,
-.ui-block > .body > .menu > ul > li > a.active:focus,
-.ui-block > .body > .menu > ul > li > a.active:active {
+.ui-block > .body > .row > .menu > ul > li > a.active:link,
+.ui-block > .body > .row > .menu > ul > li > a.active:visited,
+.ui-block > .body > .row > .menu > ul > li > a.active:hover,
+.ui-block > .body > .row > .menu > ul > li > a.active:focus,
+.ui-block > .body > .row > .menu > ul > li > a.active:active {
     color: #f20c7f;
     border-color: #f2f29d;
 }
 
 /*right menu*/
-.ui-block > .body > .right-menu {
-    position: absolute;
-    min-width: 200px;
-    min-height: 20px;
-    right: 15px;
-    top: 60px;
+.ui-block > .body > .row > .right-menu {
+/*     position: absolute; */
+/*     min-width: 200px; */
+/*     min-height: 20px; */
+/*     right: 15px; */
+/*     top: 60px; */
     background-color: #f2f29d;
     border-radius: 8px;
     border: 1px solid #999963;
@@ -339,20 +335,20 @@ button.btn {
     color: #664c59;
 }
 
-.ui-block > .body > .right-menu > em {
+.ui-block > .body > .row > .right-menu > em {
     display: block;
     font-weight: 500;
     font-style: normal;
     font-size: 18px;
 }
 
-.ui-block > .body > .right-menu > table {
+.ui-block > .body > .row > .right-menu > table {
     margin-left: 10px;
     font-size: 18px;
 
 }
 
-.ui-block > .body > .right-menu > table > tr > td {
+.ui-block > .body > .row > .right-menu > table > tr > td {
     box-sizing: border-box;
     padding: 0px 15px;
     text-align: left;
@@ -390,15 +386,17 @@ button.btn {
 
 /* end right menu */
 
-.ui-block > .body > .content {
-    position: absolute;
-    left: 245px;
-    right: 275px;
-    top: 60px;
-    bottom: 15px;
-    overflow-y: hidden;
-    padding: 0 15px 0 0;
-    box-sizing: border-box;
+.ui-block > .body > .row > .content {
+    position: relative;
+/*     left: 245px; */
+/*     right: 275px; */
+/*     top: 60px; */
+/*     bottom: 15px; */
+/*     overflow-y: auto; */
+/*     overflow-x:hidden; */
+    height: 800px;
+/*     padding: 0 15px 0 0; */
+/*     box-sizing: border-box; */
 }
 
 .filter {
