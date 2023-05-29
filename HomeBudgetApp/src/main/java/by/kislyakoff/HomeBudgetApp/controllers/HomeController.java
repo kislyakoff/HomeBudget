@@ -17,8 +17,10 @@ import org.xml.sax.SAXException;
 
 import by.kislyakoff.HomeBudgetApp.dto.projections.BalanceByCurrencyView;
 import by.kislyakoff.HomeBudgetApp.model.CbrCurrencyRate;
+import by.kislyakoff.HomeBudgetApp.model.NbRbCurrencyRate;
 import by.kislyakoff.HomeBudgetApp.service.AccountsService;
 import by.kislyakoff.HomeBudgetApp.service.CbrCurrencyRateService;
+import by.kislyakoff.HomeBudgetApp.service.NbRbCurrencyRateService;
 
 @Controller
 @RequestMapping("/homebudget")
@@ -26,11 +28,13 @@ public class HomeController {
 
         private final AccountsService accountsService;
         private final CbrCurrencyRateService cbrCurrencyRateService;
+        private final NbRbCurrencyRateService nbRbCurrencyRateService;
 
         @Autowired
-        public HomeController(AccountsService accountsService, CbrCurrencyRateService cbrCurrencyRateService) {
+        public HomeController(AccountsService accountsService, CbrCurrencyRateService cbrCurrencyRateService, NbRbCurrencyRateService nbRbCurrencyRateService) {
                 this.accountsService = accountsService;
                 this.cbrCurrencyRateService = cbrCurrencyRateService;
+				this.nbRbCurrencyRateService = nbRbCurrencyRateService;
         }
 
         @GetMapping
@@ -49,6 +53,12 @@ public class HomeController {
         @ResponseBody
         public List<CbrCurrencyRate> getCbrCurrencyRates() throws ParserConfigurationException, SAXException, IOException {
                 return cbrCurrencyRateService.getCurrencyRates(LocalDate.now());
+        }
+        
+        @GetMapping("/nbrb")
+        @ResponseBody
+        public List<NbRbCurrencyRate> getNbRbCurrencyRates() throws ParserConfigurationException, SAXException, IOException {
+                return nbRbCurrencyRateService.getNbRbCurrenctRates(LocalDate.now());
         }
 
 }
