@@ -37,7 +37,7 @@ public class CbrCurrencyRateService {
 	
 	public List<CbrCurrencyRate> getCurrencyRates(LocalDate date) throws ParserConfigurationException, SAXException, IOException {
 		
-		log.info("getCurrencyRates. date:{}", date);
+		log.info("getCbrCurrencyRates. date:{}", date);
 		
 		List<CbrCurrencyRate> rates;
 		
