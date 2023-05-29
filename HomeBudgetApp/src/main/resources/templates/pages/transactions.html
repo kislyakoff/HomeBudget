@@ -94,7 +94,7 @@
               </ul>
               <div class="form-row">
                 <label for="transaction-date" class="form-label required">Дата транзакции</label>
-                 <input id="datepicker" width="100%"/>
+                 <input id="transaction-date" width="100%"/>
              </div>
              <div class="invalid-feedback inactive" id="transaction-date-miss">Пожалуйста, укажите дату транзакции</div>
              <div class="form-row">
@@ -415,7 +415,7 @@
     				   
 	   				   $('#transaction-id').val(id);
 	  			       $('.modal-background .form-header').html('Редактирование транзакции');
-	   			       $('#datepicker').val(date);
+	   			       $('#transaction-date').val(date);
 	   			       $('#transaction-amount').val(amount);
 	   			       $('#transaction-amount').attr('data-old', amount);
 	   			       getAccountsAndFill(acc1Name, acc2Name);
@@ -481,7 +481,7 @@
 
       function hideTransactionEdit() {
           $('.modal-background').css('display', 'none');
-          $('#datepicker').datepicker().value('');
+          $('#transaction-date').datepicker().value('');
           $('#transaction-amount').val('');
           $('#transaction-amount').attr('data-old', '');
           $('label[for="transaction-amount"]').html('Сумма');
@@ -515,7 +515,7 @@
       
       function prepareData() {
           var isValid = true;
-          var date = $('#datepicker').val();
+          var date = $('#transaction-date').val();
           if (isEmpty(date)) {
               $('label[for="transaction-date"]').addClass('is-invalid');
               $('#transaction-date-miss').removeClass('inactive');
@@ -729,7 +729,7 @@
    // datepicker
       var today;
       today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-      $('#datepicker').datepicker({
+      $('#transaction-date').datepicker({
       	locale: 'ru-ru',
       	format: 'dd-mm-yyyy',
       	weekStartDay: 1,
