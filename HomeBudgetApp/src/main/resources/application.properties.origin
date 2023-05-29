@@ -18,7 +18,10 @@ spring.mvc.hiddenmethod.filter.enabled=true
 # URL for CBR Currency request
 cbr.url=https://cbr.ru/scripts/XML_daily.asp
 
-# Cache size for CBR Currency service
+# URL for NB RB Currency request
+nbrb.url=https://api.nbrb.by/exrates/rates?periodicity=0
+
+# Cache size for CBR & NBRB Currency service
 app.cache.size=365
 
 # Server configuration
