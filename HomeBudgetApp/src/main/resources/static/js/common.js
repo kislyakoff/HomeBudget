@@ -15,22 +15,22 @@ const dateNow = new Date().toLocaleDateString("ru-RU");
 let getNbRates = () => {
 	$('#curr-rate').append(' на ' + dateNow + ':');
 	$.ajax({
-		url: `/homebudget/nbrb`,
+		url: `/homebudget/rates/nbrb`,
 		type: 'GET',
 		dataType: "json",
 		success: (data) => {
 			const nb = $('#nb-rate');
 			$.each(data, function(key, value) {
 
-				switch (value.Cur_Abbreviation) {
+				switch (value.cur_Abbreviation) {
 					case "USD":
-						$('<tr><td>USD:</td><td>' + value.Cur_OfficialRate + '</td></tr>').appendTo(nb);
+						$('<tr><td>USD:</td><td>' + value.cur_OfficialRate + '</td></tr>').appendTo(nb);
 						break;
 					case "EUR":
-						$('<tr><td>EUR:</td><td>' + value.Cur_OfficialRate + '</td></tr>').appendTo(nb);
+						$('<tr><td>EUR:</td><td>' + value.cur_OfficialRate + '</td></tr>').appendTo(nb);
 						break;
 					case "RUB":
-						$('<tr><td>100RUB:</td><td>' + value.Cur_OfficialRate + '</td></tr>').appendTo(nb);
+						$('<tr><td>100RUB:</td><td>' + value.cur_OfficialRate + '</td></tr>').appendTo(nb);
 						break;
 				}
 			});
@@ -41,7 +41,7 @@ let getNbRates = () => {
 let getCbRates = () => {
 	$('#curr-rate-cbr').append(' на ' + dateNow + ':');
 	$.ajax({
-		url: `/homebudget/cbr`,
+		url: `/homebudget/rates/cbr`,
 		type: 'GET',
 		dataType: "json",
 		success: (data) => {
