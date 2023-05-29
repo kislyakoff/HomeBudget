@@ -3,7 +3,6 @@ package by.kislyakoff.HomeBudgetApp.model;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class NbRbCurrencyRate {
