@@ -393,7 +393,7 @@ button.btn {
 .ui-block > .body > .content {
     position: absolute;
     left: 245px;
-    right: 245px;
+    right: 275px;
     top: 60px;
     bottom: 15px;
     overflow-y: hidden;
