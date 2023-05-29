@@ -15,7 +15,7 @@ const dateNow = new Date().toLocaleDateString("ru-RU");
 let getNbRates = () => {
 	$('#curr-rate').append(' на ' + dateNow + ':');
 	$.ajax({
-		url: `https://api.nbrb.by/exrates/rates?periodicity=0`,
+		url: `/homebudget/nbrb`,
 		type: 'GET',
 		dataType: "json",
 		success: (data) => {
