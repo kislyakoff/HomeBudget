@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -53,7 +54,13 @@ public class CbrCurrencyRateService {
 			rates = cachedRates.getCurrencyRates();
 		}
 		
-		return rates;
+		return rates.stream().filter(rate -> isEligibleCurrency(rate)).collect(Collectors.toList());
+	}
+	
+	/* selecting of valute to collect */
+	private boolean isEligibleCurrency(CbrCurrencyRate rate) {
+		return rate.getCharCode().equals("USD") ||
+				rate.getCharCode().equals("EUR");
 	}
 
 }
