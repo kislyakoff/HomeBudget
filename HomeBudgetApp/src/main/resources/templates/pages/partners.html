@@ -11,6 +11,9 @@
 	  <button type="button" class="btn btn-outline-danger" onclick="res()">
 	  							<i class="fas fa-times"></i>&nbsp;&nbsp;Сброс</button>
 </div>
+<div class="filter" th:if="${seek != null}">
+        	Фильтр поиска:<b th:text="${seek}"></b><i class="fas fa-times text-danger" title="Сбросить" onclick="res()"></i>
+  </div>
  </form>
 
 	 <table class="table-1">
@@ -44,11 +47,12 @@
      
       <script th:inline="javascript">
       
+	//       seek parameter
+      const seek = /*[[${seek}]]*/ '';
    // перейти на страницу с заданным номером
       function go(page) {
-          if (page && page >= 1) {
-              document.location.href = page > 1 ? `/homebudget/partners/${page}` : '/homebudget/partners';
-          }
+    	  document.location.href = seek ? `/homebudget/partners/${page}` + seekParam + seek :
+    		  `/homebudget/partners/${page}`;
       }
    // переход на страницу создания
       function create() {
@@ -89,8 +93,7 @@
       }
       
       function res() {
-    	  const s = /*[[${seek}]]*/ '';
-          if (s) {
+          if (seek) {
         	  document.location.href = '/homebudget/partners';
           }
       }
