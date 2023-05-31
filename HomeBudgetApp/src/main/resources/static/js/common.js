@@ -60,3 +60,5 @@ let getCbRates = () => {
 		}
 	});
 }
+
+const seekParam = '?seek=';
