@@ -220,14 +220,11 @@ button.btn {
     box-sizing: border-box;
     border-radius: 0 0 8px 8px;
 }
-.ui-block > .body::after {
-    position: absolute;
-    bottom: 15px;
-    left: 15px;
-    min-width: 200px;
-    font-size: 12px;
-    color: #d8d8d8;
-    content: '\24B8\00a0 by.kislyakoff, 2022';
+
+/* logo style */
+.copyright {
+	font-size: 12px;
+    color: #bbbbbb;
 }
 
 .ui-block > .body > h3.breadcrumbs {
