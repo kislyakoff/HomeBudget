@@ -13,8 +13,8 @@
 
 		<div class="ui-block">
 			<div class="header">
-				<i class="fas fa-key"></i> <span>Current user:
-					[[${#httpServletRequest.remoteUser}]]</span>
+				<i class="fas fa-key"></i> 
+				<span>Current user: [[${#httpServletRequest.remoteUser}]]</span>
 				<th:block th:insert="fragments/common.html :: user-menu"></th:block>
 			</div>
 			<div class="body container-fluid">
@@ -52,19 +52,9 @@
 					<th:block
 						th:insert="fragments/common.html :: right-panel(${route})"></th:block>
 				</div>
-				<div class="row">
-					<div class="copyright col">&#9400; by.kislyakoff, 2023</div>
-				</div>
-
-
-
-
-
 			</div>
-
 		</div>
-
-
+		<div id="copyright">&#9400; by.kislyakoff, 2023</div>
 	</section>
 
 	<th:block th:insert="fragments/common.html :: preloader"></th:block>
