@@ -1,156 +1,154 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="meta">
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="author" content="" />
-        <meta name="description" content="" />
-        <meta name="generator" content="" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="author" content="" />
+	<meta name="description" content="" />
+	<meta name="generator" content="" />
 </th:block>
 
 <th:block th:fragment="styles">
-    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/webjars/font-awesome/css/all.min.css" />
-    <link rel="stylesheet" href="/webjars/perfect-scrollbar/css/perfect-scrollbar.css" />
-     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+	<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/webjars/font-awesome/css/all.min.css" />
+	<link rel="stylesheet"
+		href="/webjars/perfect-scrollbar/css/perfect-scrollbar.css" />
+	<link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css"
+		rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="/css/style.css" />
 </th:block>
 
 <th:block th:fragment="title(route)">
-    <title th:switch="${route}">
-        <th:block th:case="home">Добро пожаловать</th:block>
-        <th:block th:case="users">Список пользователей</th:block>
-        <th:block th:case="create">Новый пользователь</th:block>
-        <th:block th:case="edit">Редактирование пользователя</th:block>
-        <th:block th:case="seek">Поиск пользователя</th:block>
-        <th:block th:case="contacts">Список контактов пользователя</th:block>
-        <th:block th:case="login">Авторизация</th:block>
-        <th:block th:case="partners">Список партнеров</th:block>
-        <th:block th:case="edit_partner">Редактирование партнера</th:block>
-        <th:block th:case="create_partner">Новый партнер</th:block>
-        <th:block th:case="categories">Категории</th:block>
-        <th:block th:case="accounts">Счета</th:block>
-        <th:block th:case="transactions">Транзакции</th:block>
-        <th:block th:case="*">Unknown!</th:block>
-        | Home Budget App
-    </title>
+	<title th:switch="${route}"><th:block th:case="home">Добро пожаловать</th:block>
+		<th:block th:case="users">Список пользователей</th:block> <th:block
+			th:case="create">Новый пользователь</th:block> <th:block
+			th:case="edit">Редактирование пользователя</th:block> <th:block
+			th:case="seek">Поиск пользователя</th:block> <th:block
+			th:case="contacts">Список контактов пользователя</th:block> <th:block
+			th:case="login">Авторизация</th:block> <th:block th:case="partners">Список партнеров</th:block>
+		<th:block th:case="edit_partner">Редактирование партнера</th:block> <th:block
+			th:case="create_partner">Новый партнер</th:block> <th:block
+			th:case="categories">Категории</th:block> <th:block
+			th:case="accounts">Счета</th:block> <th:block th:case="transactions">Транзакции</th:block>
+		<th:block th:case="*">Unknown!</th:block> | Home Budget App</title>
 </th:block>
 
 <th:block th:fragment="breadcrumbs(route)">
-    <h3 class="breadcrumbs">
-        <a href="/homebudget">Главная</a>
-        <i class="fas fa-chevron-right"></i>
-        <th:block th:if="${route} == 'home'">
-            <span>Добро пожаловать</span>
-        </th:block>
-        <th:block th:if="${route} == 'users' OR ${route} == 'create' OR ${route} == 'edit'">
-            <a href="/homebudget/users">Пользователи</a>
-            <i class="fas fa-chevron-right"></i>
-            <th:block th:switch="${route}">
-                <span th:case="users">Список</span>
-                <span th:case="create">Новый</span>
-                <span th:case="edit">Редактирование</span>
-            </th:block>
-        </th:block>
-        <th:block th:if="${route} == 'partners' OR
+	<h3 class="breadcrumbs">
+		<a href="/homebudget">Главная</a> <i class="fas fa-chevron-right"></i>
+		<th:block th:if="${route} == 'home'">
+			<span>Добро пожаловать</span>
+		</th:block>
+		<th:block
+			th:if="${route} == 'users' OR ${route} == 'create' OR ${route} == 'edit'">
+			<a href="/homebudget/users">Пользователи</a>
+			<i class="fas fa-chevron-right"></i>
+			<th:block th:switch="${route}">
+				<span th:case="users">Список</span>
+				<span th:case="create">Новый</span>
+				<span th:case="edit">Редактирование</span>
+			</th:block>
+		</th:block>
+		<th:block
+			th:if="${route} == 'partners' OR
                                         ${route} == 'create_partner' OR ${route} == 'edit_partner'">
-            <a href="/homebudget/partners">Партнеры</a>
-            <i class="fas fa-chevron-right"></i>
-            <th:block th:switch="${route}">
-                <span th:case="partners">Список</span>
-                <span th:case="create_partner">Новый</span>
-                <span th:case="edit_partner">Редактирование</span>
-            </th:block>
-        </th:block>
-        <th:block th:if="${route} == 'categories'">
-            <a href="/homebudget/categories">Категории</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>Список</span>
-        </th:block>
-        <th:block th:if="${route} == 'accounts'">
-            <a href="/homebudget/accounts">Счета</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>Список</span>
-        </th:block>
-        <th:block th:if="${route} == 'transactions'">
-            <a href="/homebudget/transactions">Транзакции</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>Список</span>
-        </th:block>
-    </h3>
+			<a href="/homebudget/partners">Партнеры</a>
+			<i class="fas fa-chevron-right"></i>
+			<th:block th:switch="${route}">
+				<span th:case="partners">Список</span>
+				<span th:case="create_partner">Новый</span>
+				<span th:case="edit_partner">Редактирование</span>
+			</th:block>
+		</th:block>
+		<th:block th:if="${route} == 'categories'">
+			<a href="/homebudget/categories">Категории</a>
+			<i class="fas fa-chevron-right"></i>
+			<span>Список</span>
+		</th:block>
+		<th:block th:if="${route} == 'accounts'">
+			<a href="/homebudget/accounts">Счета</a>
+			<i class="fas fa-chevron-right"></i>
+			<span>Список</span>
+		</th:block>
+		<th:block th:if="${route} == 'transactions'">
+			<a href="/homebudget/transactions/paginated">Транзакции</a>
+			<i class="fas fa-chevron-right"></i>
+			<span>Список</span>
+		</th:block>
+	</h3>
 </th:block>
 
 <th:block th:fragment="menu(route)">
-    <div class="menu col-2 h-100">
-        <th:block sec:authorize="hasAuthority('ADMIN')">
-                <em><i class="fas fa-users-cog"></i> Меню администратора</em>
-                <ul>
-                    <li>
-                        <a class="active" th:if="${route == 'users'}">Пользователи</a>
-                        <a href="/homebudget/users" th:unless="${route == 'users'}">Пользователи</a>
-                    </li>
-                </ul>
-                <th:block th:fragment="usermenu">
+	<div class="menu col-2 h-100">
+		<th:block sec:authorize="hasAuthority('ADMIN')">
+			<em><i class="fas fa-users-cog"></i> Меню администратора</em>
+			<ul>
+				<li><a class="active" th:if="${route == 'users'}">Пользователи</a>
+					<a href="/homebudget/users" th:unless="${route == 'users'}">Пользователи</a>
+				</li>
+			</ul>
+			<th:block th:fragment="usermenu">
+				<em><i class="fas fa-donate"></i> Финансы</em>
+				<ul>
+					<li><a class="active" th:if="${route == 'accounts'}">Счета</a>
+						<a href="/homebudget/accounts" th:unless="${route == 'accounts'}">Счета</a>
+					</li>
+					<li><a class="active" th:if="${route == 'transactions'}">Тразакции</a>
+						<a href="/homebudget/transactions/paginated"
+						th:unless="${route == 'transactions'}">Транзакции</a></li>
+				</ul>
+				<em><i class="fas fa-book"></i> Справочник</em>
+				<ul>
+					<li><a class="active" th:if="${route == 'partners'}">Партнеры</a>
+						<a href="/homebudget/partners" th:unless="${route == 'partners'}">Партнеры</a>
+					</li>
+					<li><a class="active" th:if="${route == 'categories'}">Категории</a>
+						<a href="/homebudget/categories"
+						th:unless="${route == 'categories'}">Категории</a></li>
+				</ul>
+			</th:block>
+		</th:block>
 
-                        <em><i class="fas fa-donate"></i> Финансы</em>
-                        <ul>
-                                <li>
-                                <a class="active" th:if="${route == 'accounts'}">Счета</a>
-                                <a href="/homebudget/accounts" th:unless="${route == 'accounts'}">Счета</a>
-                            </li>
-                            <li>
-                                <a class="active" th:if="${route == 'transactions'}">Тразакции</a>
-                                <a href="/homebudget/transactions" th:unless="${route == 'transactions'}">Транзакции</a>
-                            </li>
-                    </ul>
-                        <em><i class="fas fa-book"></i> Справочник</em>
-                        <ul>
-                                <li>
-                                <a class="active" th:if="${route == 'partners'}">Партнеры</a>
-                                <a href="/homebudget/partners" th:unless="${route == 'partners'}">Партнеры</a>
-                            </li>
-                            <li>
-                                <a class="active" th:if="${route == 'categories'}">Категории</a>
-                                <a href="/homebudget/categories" th:unless="${route == 'categories'}">Категории</a>
-                            </li>
-                    </ul>
-                    </th:block>
-        </th:block>
+		<th:block sec:authorize="hasAuthority('USER')">
+			<th:block th:insert=":: usermenu"></th:block>
+		</th:block>
 
-        <th:block sec:authorize="hasAuthority('USER')">
-            <th:block th:insert=":: usermenu"></th:block>
-        </th:block>
-
-    </div>
+	</div>
 </th:block>
 
 <th:block th:fragment="right-panel(route)">
-    <div class="right-menu col-2 h-100">
+	<div class="right-menu col-2 h-100">
 
-                        <em id="curr-rate"><i class="fas fa-chart-line"></i> Курс BYN НБРБ</em>
-                        <table id="nb-rate"></table>
-                        <em id="curr-rate-cbr"><i class="fas fa-ruble-sign"></i> Курс RUB ЦБРФ</em>
-                        <table id="cb-rate"></table>
-    </div>
+
+		<em id="curr-rate"><i class="fas fa-chart-line"></i> Курс BYN
+			НБРБ</em>
+		<table id="nb-rate"></table>
+		<em id="curr-rate-cbr"><i class="fas fa-ruble-sign"></i> Курс RUB
+			ЦБРФ</em>
+		<table id="cb-rate"></table>
+	</div>
 </th:block>
 
 
 <th:block th:fragment="user-menu">
-    <div class="user-menu">
-        <div class="fas fa-user-circle">
-            <div class="menu">
-                <div class="items">
-                   <a href="javascript: document.logoutForm.submit()">
-                                                        <i class="fas fa-sign-out-alt"></i> Выход</a>
+	<div class="user-menu">
+		<div class="fas fa-user-circle">
+			<div class="menu">
+				<div class="items">
+					<a href="javascript: document.logoutForm.submit()"> <i
+						class="fas fa-sign-out-alt"></i> Выход
+					</a>
 
-                                   <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
-                                      <input type="submit" value=""/>
-                                   </form>
-                    <a href="javascript:void(0)" onclick="edit()"><i class="fas fa-edit"></i> Изменить</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
+					<form name="logoutForm" th:action="@{/logout}" method="post"
+						th:hidden="true">
+						<input type="submit" value="" />
+					</form>
+					<a href="javascript:void(0)" onclick="edit()"><i
+						class="fas fa-edit"></i> Изменить</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
 
 
 //         TODO: implement edit user GET request
@@ -172,86 +170,72 @@
 </th:block>
 
 <th:block th:fragment="preloader">
-    <section class="preloader d-none">
-        <div class="preloader-block">
-            <div class="preloader-spinner">
-                <div></div>
-            </div>
-        </div>
-    </section>
+	<section class="preloader d-none">
+		<div class="preloader-block">
+			<div class="preloader-spinner">
+				<div></div>
+			</div>
+		</div>
+	</section>
 </th:block>
 
 <th:block th:fragment="pagination">
-    <ul class="page-control" th:if="${pagination} != null">
-                <li th:text="'Перв.'"
-                th:onclick="go([[1]])"
-            ></li>
+	<ul class="page-control" th:if="${pagination} != null">
 
-                <th:block th:if="${!pagination.pages[0].isActive}">
-                         <li th:text="'Пред.'"
-                                 th:onclick="go([[${page} - 1]])"
-                         ></li>
-                </th:block>
-                <th:block th:if="${pagination.pages[0].isActive}">
-                         <li th:text="'Пред.'"
-                         ></li>
-                </th:block>
+		<th:block th:if="${!pagination.pages[0].isActive}">
+			<li th:text="'Перв.'" th:onclick="go([[1]])"></li>
+			<li th:text="'Пред.'" th:onclick="go([[${page} - 1]])"></li>
+		</th:block>
+		<th:block th:if="${pagination.pages[0].isActive}">
+			<li th:text="'Перв.'"></li>
+			<li th:text="'Пред.'"></li>
+		</th:block>
 
-        <th:block th:each="page: ${pagination.pages}">
+		<th:block th:each="page: ${pagination.pages}">
 
-            <li th:if="${!page.isSkipped && !page.isActive}"
-                th:text="${page.number}"
-                th:onclick="go([[${page.number}]])"
-            ></li>
-            <li th:if="${!page.isSkipped && page.isActive}"
-                th:text="${page.number}"
-                class="active"
-            ></li>
-            <li th:if="${page.isSkipped}"
-                class="skip"
-            ></li>
-        </th:block>
-        <th:block th:if="${!pagination.pages[pagination.pages.length - 1].isActive}">
-                         <li th:text="'След.'"
-                                 th:onclick="go([[${page} + 1]])"
-                         ></li>
-                </th:block>
-                <th:block th:if="${pagination.pages[pagination.pages.length - 1].isActive}">
-                         <li th:text="'След.'"
-                         ></li>
-                </th:block>
-        <li th:text="'Посл.'"
-                th:onclick="go([[${pagination.pages[pagination.pages.length - 1].number}]])"
-            ></li>
-    </ul>
+			<li th:if="${!page.isSkipped && !page.isActive}"
+				th:text="${page.number}" th:onclick="go([[${page.number}]])"></li>
+			<li th:if="${!page.isSkipped && page.isActive}"
+				th:text="${page.number}" class="active"></li>
+			<li th:if="${page.isSkipped}" class="skip"></li>
+		</th:block>
+		<th:block
+			th:if="${!pagination.pages[pagination.pages.length - 1].isActive}">
+			<li th:text="'След.'" th:onclick="go([[${page} + 1]])"></li>
+			<li th:text="'Посл.'"
+				th:onclick="go([[${pagination.pages[pagination.pages.length - 1].number}]])"></li>
+		</th:block>
+		<th:block
+			th:if="${pagination.pages[pagination.pages.length - 1].isActive}">
+			<li th:text="'След.'"></li>
+			<li th:text="'Посл.'"></li>
+		</th:block>
+
+	</ul>
 </th:block>
 
 <th:block th:fragment="start_scripts">
-    <script src="/webjars/jquery/jquery.min.js"></script>
-    <script src="/webjars/autonumeric/dist/autoNumeric.min.js"></script>
-    <script src="/js/gijgo.min.js" ></script> <!-- Bootstrap 5 DatePicker powered by gijgo.com -->
-    <script src="/js/messages.ru-ru.js" ></script>
+	<script src="/webjars/jquery/jquery.min.js"></script>
+	<script src="/webjars/autonumeric/dist/autoNumeric.min.js"></script>
+	<script src="/js/gijgo.min.js"></script>
+	<!-- Bootstrap 5 DatePicker powered by gijgo.com -->
+	<script src="/js/messages.ru-ru.js"></script>
 </th:block>
 
 <th:block th:fragment="scripts_libs">
-        <script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/webjars/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
-<!--     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script> -->
-    <script src="/js/common.js"></script>
+	<script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="/webjars/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+	<script src="/js/common.js"></script>
 </th:block>
 
 <th:block th:fragment="scripts">
-    <script>
+	<script>
         $(document).ready(function() {
             const content = document.querySelector('#content');
             if (content) {
                 const ps = new PerfectScrollbar(content);
             }
         });
-        
-        /* $('.row').masonry({
-        	  itemSelector : '.col'
-        	}); */
         
         $(getNbRates());
         $(getCbRates());

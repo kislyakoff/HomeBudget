@@ -735,12 +735,14 @@
       	weekStartDay: 1,
       	maxDate: today
       });
-      
+   
+      // seek parameter
+      const seek = /*[[${seek}]]*/ '';
    // перейти на страницу с заданным номером
       function go(page) {
-          if (page && page >= 1) {
-              document.location.href = page > 1 ? `/homebudget/transactions/paginated/${page}` : '/homebudget/transactions/paginated';
-          }
+	   /* const seekParam = '?seek='; */
+	   document.location.href = seek ? `/homebudget/transactions/paginated/${page}` + seekParam + seek :
+		   `/homebudget/transactions/paginated/${page}`;
       }
    
       function search() {
@@ -751,8 +753,8 @@
       }
       
       function res() {
-    	  const s = /*[[${seek}]]*/ '';
-          if (s) {
+    	  
+          if (seek) {
         	  document.location.href = '/homebudget/transactions/paginated';
           }
       }
