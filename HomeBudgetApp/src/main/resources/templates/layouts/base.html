@@ -24,7 +24,7 @@
 					<th:block th:insert="fragments/common.html :: menu(${route})"></th:block>
 
 
-					<div class="content col-8" id="content">
+					<div class="content col-10 col-lg-8" id="content">
 						<th:block th:switch="${route}">
 							<th:block th:case="home" th:insert="pages/home.html :: content"></th:block>
 							<th:block th:case="users" th:insert="pages/users.html :: content"></th:block>

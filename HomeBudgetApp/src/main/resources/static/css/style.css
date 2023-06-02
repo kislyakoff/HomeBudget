@@ -348,16 +348,21 @@ button.btn {
 }
 
 .ui-block > .body > .row > .right-menu > table {
-    margin-left: 10px;
+    margin-left: 5px;
     font-size: 18px;
 
 }
 
 .ui-block > .body > .row > .right-menu > table > tr > td {
     box-sizing: border-box;
-    padding: 0px 15px;
+    padding: 0px 5px;
     text-align: left;
+    font-size: 16px;
 
+}
+
+.ui-block > .body > .row > .right-menu > table > tr td:first-child {
+    min-width: 60px;
 }
 
 .ui-block > .body > .right-menu > ul {

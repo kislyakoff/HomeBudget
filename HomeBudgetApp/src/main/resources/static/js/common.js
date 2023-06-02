@@ -13,7 +13,7 @@ function preloader(active) {
 const dateNow = new Date().toLocaleDateString("ru-RU");
 
 let getNbRates = () => {
-	$('#curr-rate').append(' на ' + dateNow + ':');
+	$('#curr-rate').append(' ' + dateNow + ':');
 	$.ajax({
 		url: `/homebudget/rates/nbrb`,
 		type: 'GET',
@@ -39,7 +39,7 @@ let getNbRates = () => {
 };
 
 let getCbRates = () => {
-	$('#curr-rate-cbr').append(' на ' + dateNow + ':');
+	$('#curr-rate-cbr').append(' ' + dateNow + ':');
 	$.ajax({
 		url: `/homebudget/rates/cbr`,
 		type: 'GET',
