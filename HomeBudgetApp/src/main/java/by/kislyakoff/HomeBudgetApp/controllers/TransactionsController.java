@@ -67,7 +67,7 @@ public class TransactionsController {
 		if (page.isPresent()) {
 			_page = page.get() - 1;
 		}
-		Page<TransactionProjection> list = transactionsService.getTransactionsListPaginated(ownerId, seek, _page, 
+		Page<TransactionProjection2> list = transactionsService.getTransactionsListPaginated(ownerId, seek, _page, 
 									TransactionsService.DEFAULT_TRANSACTIONS_PER_PAGE);
 		model.addAttribute("transactions", list.getContent());
 		model.addAttribute("page", _page + 1);

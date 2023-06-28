@@ -38,7 +38,7 @@ public class TransactionsService {
 		return transactionsRepository.findByAcc1PersonIdOrderByDateDesc(personId);
 	}
 	
-	public Page<TransactionProjection> getTransactionsListPaginated(int personId, 
+	public Page<TransactionProjection2> getTransactionsListPaginated(int personId, 
 									String seek, int page, int transactionsPerPage) {
 		
 		return seek == null ? 
