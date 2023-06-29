@@ -77,26 +77,26 @@ public interface TransactionsRepository extends JpaRepository<Transaction, Long>
 //      List<TransactionView> findByAcc1PersonIdOrderByDateDescTest(int personId);
 
     @Query("SELECT t.id AS id, " +
-                       "t.type AS type, " +
-                       "t.date AS date, " +
-                       "t.amount AS amount, " +
-                       "t.comment AS comment, " +
-                       "a1.balance AS acc1Balance, " +
-                       "a1.currencyCode AS acc1CurrencyCode, " +
-                       "a1.name AS acc1Name, " +
-                       "a2.balance AS acc2Balance, " +
-                       "a2.currencyCode AS acc2CurrencyCode, " +
-                       "a2.name AS acc2Name, " +
-                       "t.partner.name AS transactionsPartnerName, " +
-                       "t.category.name AS category_name " +
-//                         "t.category.type AS category " +
-                       "FROM Transaction t " +
-                       "LEFT JOIN t.acc1 AS a1 ON t.acc1.id=a1.id " +
-                       "LEFT OUTER JOIN a1.person AS per ON a1.person.id=per.id " +
-                       "LEFT OUTER JOIN t.acc2 AS a2 ON t.acc2.id=a2.id " +
-                       "LEFT OUTER JOIN t.partner AS par ON t.partner.id=par.id " +
-                       "LEFT OUTER JOIN t.category AS cat ON t.category.id=cat.id " +
-                       "WHERE t.acc1.person.id= :personId ORDER BY t.date DESC")
+            "t.type AS type, " +
+            "t.date AS date, " +
+            "t.amount AS amount, " +
+            "t.comment AS comment, " +
+            "t.acc1.balance AS acc1Balance, " +
+            "t.acc1.currencyCode AS acc1CurrencyCode, " +
+            "t.acc1.name AS acc1Name, " +
+            "t.acc2.balance AS acc2Balance, " +
+            "t.acc2.currencyCode AS acc2CurrencyCode, " +
+            "t.acc2.name AS acc2Name, " +
+            "t.partner.name AS partnerName, " +
+            "t.category.name AS categoryName, " +
+            "t.category.type AS category " +
+            "FROM Transaction t " +
+            "LEFT JOIN t.acc1 " +
+            "LEFT JOIN t.acc1.person " +
+            "LEFT JOIN t.acc2 " +
+            "LEFT JOIN t.partner " +
+            "LEFT JOIN t.category " +
+            "WHERE t.acc1.person.id= :personId ORDER BY t.date DESC")
     List<TransactionView> findByAcc1PersonIdOrderByDateDescTest(@Param("personId")int personId);
 
 //      @Query(value = "SELECT t.id AS id, " +
@@ -137,11 +137,11 @@ public interface TransactionsRepository extends JpaRepository<Transaction, Long>
                        "cat.name AS categoryName, " +
                        "cat.type AS category " +
                        "FROM Transaction t " +
-                       "LEFT OUTER JOIN t.acc1 a1 ON t.acc1.id=a1.id " +
-                       "LEFT OUTER JOIN a1.person per ON a1.person.id=per.id " +
-                       "LEFT OUTER JOIN t.acc2 a2 ON t.acc2.id=a2.id " +
-                       "LEFT OUTER JOIN t.partner par ON t.partner.id=par.id " +
-                       "LEFT OUTER JOIN t.category cat ON t.category.id=cat.id " +
+                       "LEFT JOIN t.acc1 a1 " +
+                       "LEFT JOIN a1.person per " +
+                       "LEFT JOIN t.acc2 a2 " +
+                       "LEFT JOIN t.partner par " +
+                       "LEFT JOIN t.category cat " +
                        "WHERE t.acc1.person.id= :personId ORDER BY t.date DESC")
     List<TransactionProjection2> findByAcc1PersonIdOrderByDateDescTest1(@Param("personId")int personId);
 
@@ -206,16 +206,16 @@ public interface TransactionsRepository extends JpaRepository<Transaction, Long>
             "a2.balance AS acc2Balance, " +
             "a2.currencyCode AS acc2CurrencyCode, " +
             "a2.name AS acc2Name, " +
-            "t.partner.name AS partnerName, " +
+            "par.name AS partnerName, " +
             "cat.name AS categoryName, " +
             "cat.type AS category " +
             "FROM Transaction t " +
-            "LEFT OUTER JOIN t.acc1 a1 ON t.acc1.id=a1.id " +
-            "LEFT OUTER JOIN a1.person per ON a1.person.id=per.id " +
-            "LEFT OUTER JOIN t.acc2 a2 ON t.acc2.id=a2.id " +
-            "LEFT OUTER JOIN t.partner par ON t.partner.id=par.id " +
-            "LEFT OUTER JOIN t.category cat ON t.category.id=cat.id " +
-            "WHERE t.acc1.person.id= :personId ORDER BY t.date DESC")
+            "LEFT JOIN t.acc1 a1 " +
+            "LEFT JOIN a1.person per " +
+            "LEFT JOIN t.acc2 a2 " +
+            "LEFT JOIN t.partner par " +
+            "LEFT JOIN t.category cat " +
+            "WHERE a1.person.id= :personId ORDER BY t.date DESC")
     Page<TransactionProjection2> findByAcc1PersonIdOrderByDateDescPaginated(@Param("personId")int personId, 
     		Pageable pageable);
     
@@ -230,17 +230,17 @@ public interface TransactionsRepository extends JpaRepository<Transaction, Long>
             "a2.balance AS acc2Balance, " +
             "a2.currencyCode AS acc2CurrencyCode, " +
             "a2.name AS acc2Name, " +
-            "t.partner.name AS partnerName, " +
+            "par.name AS partnerName, " +
             "cat.name AS categoryName, " +
             "cat.type AS category " +
             "FROM Transaction t " +
-            "LEFT OUTER JOIN t.acc1 a1 ON t.acc1.id=a1.id " +
-            "LEFT OUTER JOIN a1.person per ON a1.person.id=per.id " +
-            "LEFT OUTER JOIN t.acc2 a2 ON t.acc2.id=a2.id " +
-            "LEFT OUTER JOIN t.partner par ON t.partner.id=par.id " +
-            "LEFT OUTER JOIN t.category cat ON t.category.id=cat.id " +
-            "WHERE t.acc1.person.id= :personId " + 
-            "AND (LOWER (t.partner.name) LIKE %:seek% OR LOWER (t.comment) LIKE %:seek% OR LOWER (cat.name) LIKE %:seek%) " +
+            "LEFT OUTER JOIN t.acc1 a1 " +
+            "LEFT OUTER JOIN a1.person per " +
+            "LEFT OUTER JOIN t.acc2 a2 " +
+            "LEFT OUTER JOIN t.partner par " +
+            "LEFT OUTER JOIN t.category cat " +
+            "WHERE a1.person.id= :personId " + 
+            "AND (LOWER (par.name) LIKE %:seek% OR LOWER (t.comment) LIKE %:seek% OR LOWER (cat.name) LIKE %:seek%) " +
     		"ORDER BY t.date DESC")
     Page<TransactionProjection2> findByAcc1PersonIdOrderByDateDesc_WithSearchPaginated(@Param("personId")int personId, 
     		@Param("seek") String seek, Pageable pageable);
