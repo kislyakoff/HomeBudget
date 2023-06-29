@@ -26,13 +26,7 @@ import by.kislyakoff.HomeBudgetApp.model.Transaction;
 public interface TransactionsRepository extends JpaRepository<Transaction, Long> {
 
     boolean existsByAcc1IdOrAcc2Id(int accId, int accId2);
-//      List<Transaction> findByAcc1PersonId(int personId);
     List<TransactionView> findByAcc1PersonIdOrderByDateDesc(int personId);
-
-
-//      Page<TransactionView>
-//              findByAcc1NameContainingOrAcc2NameContainingOrPartnerNameContainingOrCategoryNameContainingOrCommentContainingAndAcc1PersonIdOrderByDateDesc
-//                      (String seek, String seek2, int personId, Pageable pageable);
 
     @Query(value = "SELECT transaction_type AS type, SUM(amount) AS amount FROM transaction WHERE acc1_id=?1 " +
                                     "GROUP BY transaction_type", nativeQuery = true)
@@ -51,30 +45,6 @@ public interface TransactionsRepository extends JpaRepository<Transaction, Long>
 
     long deleteByIdAndAcc1PersonId(long id, int ownerId);
     Optional<Transaction> findByIdAndAcc1PersonId(long id, int ownerId);
-
-
-//      @Query(value = "SELECT t.id AS id, " +
-//                                 "t.transaction_type AS type, " +
-//                                 "t.transaction_date AS date, " +
-//                                 "t.amount AS amount, " +
-//                                 "t.comment AS comment, " +
-//                                 "a1.balance AS acc1Balance, " +
-//                                 "a1.currency_code AS acc1CurrencyCode, " +
-//                                 "a1.name AS acc1Name, " +
-//                                 "a2.balance AS acc2Balance, " +
-//                                 "a2.currency_code AS acc2CurrencyCode, " +
-//                                 "a2.name AS acc2Name, " +
-//                                 "par.name AS partnerName, " +
-//                                 "cat.name AS categoryName, " +
-//                                 "cat.category_type AS categoryType " +
-//                                 "FROM transaction t " +
-//                                 "LEFT OUTER JOIN account a1 ON t.acc1_id=a1.id " +
-//                                 "LEFT OUTER JOIN person per ON a1.person_id=per.id " +
-//                                 "LEFT OUTER JOIN account a2 ON t.acc2_id=a2.id " +
-//                                 "LEFT OUTER JOIN partner par ON t.partner_id=par.id " +
-//                                 "LEFT OUTER JOIN category cat ON t.category_id=cat.id " +
-//                                 "WHERE per.id=?1 ORDER BY t.transaction_date DESC", nativeQuery = true)
-//      List<TransactionView> findByAcc1PersonIdOrderByDateDescTest(int personId);
 
     @Query("SELECT t.id AS id, " +
             "t.type AS type, " +
@@ -234,11 +204,11 @@ public interface TransactionsRepository extends JpaRepository<Transaction, Long>
             "cat.name AS categoryName, " +
             "cat.type AS category " +
             "FROM Transaction t " +
-            "LEFT OUTER JOIN t.acc1 a1 " +
-            "LEFT OUTER JOIN a1.person per " +
-            "LEFT OUTER JOIN t.acc2 a2 " +
-            "LEFT OUTER JOIN t.partner par " +
-            "LEFT OUTER JOIN t.category cat " +
+            "LEFT JOIN t.acc1 a1 " +
+            "LEFT JOIN a1.person per " +
+            "LEFT JOIN t.acc2 a2 " +
+            "LEFT JOIN t.partner par " +
+            "LEFT JOIN t.category cat " +
             "WHERE a1.person.id= :personId " + 
             "AND (LOWER (par.name) LIKE %:seek% OR LOWER (t.comment) LIKE %:seek% OR LOWER (cat.name) LIKE %:seek%) " +
     		"ORDER BY t.date DESC")
