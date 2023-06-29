@@ -12,7 +12,6 @@ public interface TransactionView {
 	
 	Long getId();
 	
-//	@Value("#{@transactionTypeConverter.convertToEntityAttribute(target.type)}")
 	TransactionType getType();
 	
 	LocalDate getDate();
@@ -29,9 +28,6 @@ public interface TransactionView {
 	
 	BigDecimal getAmount();
 	
-	@Value("#{target.partner.name}")
-	String getTransactionsPartnerName();
-	
 	PartnerView getPartner();
 	
 	interface PartnerView {
@@ -44,7 +40,6 @@ public interface TransactionView {
 	CategoryView getCategory();
 	
 	interface CategoryView {
-//		@Value("#{target.type}")
 		String getName();
 	}
 }
